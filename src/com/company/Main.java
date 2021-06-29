@@ -1,6 +1,7 @@
 package com.company;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
+import java.util.Random;
 
 public class Main {
 
@@ -13,11 +14,16 @@ public class Main {
 //        for(int i=0;i<10;i++){
 //            System.out.println(f.Tekst());
 //        }
-        String name = JOptionPane.showInputDialog("Name");
-        JOptionPane.showMessageDialog(null,"XD"+name);
+//        String name = JOptionPane.showInputDialog("Name");
+//        JOptionPane.showMessageDialog(null,"XD"+name);
+//
+//        int age = Integer.parseInt(JOptionPane.showInputDialog("Age"));
+//        double sqrt = Math.sqrt(age);
+//        JOptionPane.showMessageDialog(null,"XD"+sqrt);
 
-        int age = Integer.parseInt(JOptionPane.showInputDialog("Age"));
-        JOptionPane.showMessageDialog(null,"XD"+age);
+        Random generator = new Random();
+        int rand = generator.nextInt(6)+1;
+        JOptionPane.showMessageDialog(null,rand);
     }
 
 }
