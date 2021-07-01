@@ -24,17 +24,20 @@ public class Main {
 
         Random generator = new Random();
         int rand = generator.nextInt(6)+1;
-        JOptionPane.showMessageDialog(null,rand);
+        //JOptionPane.showMessageDialog(null,rand);
 
         ArrayList<Integer> Randoms = new ArrayList<Integer>();
         Randoms.add(generator.nextInt(6)+1);
-        Randoms.set(0,12);
-        Randoms.remove(1);
-        Randoms.clear();
-        for(int i=0;i<Randoms.size();i++){
-            JOptionPane.showMessageDialog(null,Randoms.get(i));
+        Randoms.add(generator.nextInt(6)+1);
+        Randoms.set(1,12);
+        //Randoms.remove(1);
+        //Randoms.clear();
+//        for(int i=0;i<Randoms.size();i++){
+//            JOptionPane.showMessageDialog(null,Randoms.get(i));
+//        }
+        for(int i : Randoms){
+            JOptionPane.showMessageDialog(null,i);
         }
-
     }
 
 }
