@@ -1,4 +1,5 @@
 package com.company;
+import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 import java.util.Random;
@@ -24,6 +25,16 @@ public class Main {
         Random generator = new Random();
         int rand = generator.nextInt(6)+1;
         JOptionPane.showMessageDialog(null,rand);
+
+        ArrayList<Integer> Randoms = new ArrayList<Integer>();
+        Randoms.add(generator.nextInt(6)+1);
+        Randoms.set(0,12);
+        Randoms.remove(1);
+        Randoms.clear();
+        for(int i=0;i<Randoms.size();i++){
+            JOptionPane.showMessageDialog(null,Randoms.get(i));
+        }
+
     }
 
 }
