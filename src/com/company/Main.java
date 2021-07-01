@@ -22,13 +22,12 @@ public class Main {
 //        double sqrt = Math.sqrt(age);
 //        JOptionPane.showMessageDialog(null,"XD"+sqrt);
 
-        Random generator = new Random();
-        int rand = generator.nextInt(6)+1;
+        random();
         //JOptionPane.showMessageDialog(null,rand);
 
         ArrayList<Integer> Randoms = new ArrayList<Integer>();
-        Randoms.add(generator.nextInt(6)+1);
-        Randoms.add(generator.nextInt(6)+1);
+        Randoms.add(random());
+        Randoms.add(random());
         Randoms.set(1,12);
         //Randoms.remove(1);
         //Randoms.clear();
@@ -38,6 +37,12 @@ public class Main {
         for(int i : Randoms){
             JOptionPane.showMessageDialog(null,i);
         }
+    }
+
+    static int random() {
+        Random generator = new Random();
+        int rand = generator.nextInt(6)+1;
+        return rand;
     }
 
 }
