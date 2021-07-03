@@ -1,10 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
-public class Label extends JLabel {
-    public Label() {
-        //this.setIcon(new ImageIcon("src/Background.jpg"));
-        this.setIcon(new ImageIcon(getClass().getClassLoader().getResource("Background.jpg")));
+public class Background extends JLabel {
+    public Background() {
+        this.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("Background.jpg"))));
         this.setBackground(Color.BLACK);
         this.setOpaque(true);
         this.setVerticalAlignment(JLabel.CENTER);
