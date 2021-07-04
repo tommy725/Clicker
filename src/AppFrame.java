@@ -29,12 +29,12 @@ public class AppFrame extends JFrame implements ActionListener {
         background = new Background();
         //Buttons settings
         buttonDefaultMsLeft = new Button(292,20,80,30,"Default");
-        buttonDefaultMsLeft.addActionListener(e -> textMsLeft.setText("80"));
+        buttonDefaultMsLeft.addActionListener(e -> textMsLeft.setText("80.0"));
         buttonDefaultCpsLeft = new Button(292,50,80,30,"Default");
         buttonDefaultCpsLeft.setEnabled(false);
         buttonDefaultCpsLeft.addActionListener(e -> textCpsLeft.setText("12.5"));
         buttonDefaultMsRight = new Button(292,130,80,30,"Default");
-        buttonDefaultMsRight.addActionListener(e -> textMsRight.setText("40"));
+        buttonDefaultMsRight.addActionListener(e -> textMsRight.setText("40.0"));
         buttonDefaultCpsRight = new Button(292,160,80,30,"Default");
         buttonDefaultCpsRight.setEnabled(false);
         buttonDefaultCpsRight.addActionListener(e -> textCpsRight.setText("25.0"));
@@ -78,11 +78,11 @@ public class AppFrame extends JFrame implements ActionListener {
         //=======================================================
         //Textfields settings
         textMsLeft = new TextField(135,20,120,30);
-        textMsLeft.setText("80");
+        textMsLeft.setText("80.0");
         textCpsLeft = new TextField(135,50,120,30);
         textCpsLeft.setText("12.5");
         textMsRight = new TextField(135,130,120,30);
-        textMsRight.setText("40");
+        textMsRight.setText("40.0");
         textCpsRight = new TextField(135,160,120,30);
         textCpsRight.setText("25.0");
         textCpsLeft.setEnabled(false);
@@ -110,6 +110,28 @@ public class AppFrame extends JFrame implements ActionListener {
                 }
             }
         });
+        textCpsLeft.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(textCpsLeft.isEnabled()){
+                    textMsLeft.setText(textCpsLeft.ConvertMsCPS(textCpsLeft.getText()));
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if(textCpsLeft.isEnabled()){
+                    textMsLeft.setText(textCpsLeft.ConvertMsCPS(textCpsLeft.getText()));
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if(textCpsLeft.isEnabled()){
+                    textMsLeft.setText(textCpsLeft.ConvertMsCPS(textCpsLeft.getText()));
+                }
+            }
+        });
         textMsRight.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -129,6 +151,28 @@ public class AppFrame extends JFrame implements ActionListener {
             public void changedUpdate(DocumentEvent e) {
                 if(textMsRight.isEnabled()) {
                     textCpsRight.setText(textMsRight.ConvertMsCPS(textMsRight.getText()));
+                }
+            }
+        });
+        textCpsRight.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(textCpsRight.isEnabled()) {
+                    textMsRight.setText(textCpsRight.ConvertMsCPS(textCpsRight.getText()));
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if(textCpsRight.isEnabled()) {
+                    textMsRight.setText(textCpsRight.ConvertMsCPS(textCpsRight.getText()));
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if(textCpsRight.isEnabled()) {
+                    textMsRight.setText(textCpsRight.ConvertMsCPS(textCpsRight.getText()));
                 }
             }
         });

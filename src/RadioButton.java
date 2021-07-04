@@ -6,6 +6,7 @@ public class RadioButton extends JRadioButton {
         this.setBounds(x,y,width,height);
         this.setText(text);
         this.setOpaque(false);
+        this.setFont(new Font("Segoe",Font.PLAIN,16));
         this.setForeground(Color.WHITE);
     }
 }

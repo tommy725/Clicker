@@ -13,6 +13,9 @@ public class TextField extends JTextField {
         String str;
         try{
             double val = Double.parseDouble(valstr);
+            if(val<=0){
+                throw new Exception("Bad value");
+            }
             val = (1000/val)*100;
             int cut = (int)val;
             str = String.valueOf(cut/100.0);
