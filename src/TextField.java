@@ -9,7 +9,7 @@ public class TextField extends JTextField {
         this.setForeground(Color.WHITE);
     }
 
-    public String ConvertMsToCPS(String valstr){
+    public String ConvertMsCPS(String valstr){
         String str;
         try{
             double val = Double.parseDouble(valstr);

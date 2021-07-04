@@ -10,8 +10,9 @@ public class AppFrame extends JFrame implements ActionListener {
     Background background;
     Button buttonDefaultMsLeft, buttonDefaultCpsLeft, buttonExit, buttonSettings, buttonAbout, buttonDefaultMsRight, buttonDefaultCpsRight,buttonBackFromSettings;
     TextField textMsLeft, textCpsLeft, textMsRight, textCpsRight;
-    Label labelLeftClick,labelRightClick,labelMsLeftClick,labelCpsLeftClick,labelMsRightClick,labelCpsRightClick;
+    Label labelLeftClick,labelRightClick,labelMsLeftClick,labelCpsLeftClick,labelMsRightClick,labelCpsRightClick,labelMsCpsSwitch;
     CheckBox rightOnOff,leftOnOff;
+    RadioButton msInput,cpsInput;
     public AppFrame() throws HeadlessException {
         //Frame settings
         this.setTitle("Kambed clicker v2.0");
@@ -30,10 +31,12 @@ public class AppFrame extends JFrame implements ActionListener {
         buttonDefaultMsLeft = new Button(292,20,80,30,"Default");
         buttonDefaultMsLeft.addActionListener(e -> textMsLeft.setText("80"));
         buttonDefaultCpsLeft = new Button(292,50,80,30,"Default");
+        buttonDefaultCpsLeft.setEnabled(false);
         buttonDefaultCpsLeft.addActionListener(e -> textCpsLeft.setText("12.5"));
         buttonDefaultMsRight = new Button(292,130,80,30,"Default");
         buttonDefaultMsRight.addActionListener(e -> textMsRight.setText("40"));
         buttonDefaultCpsRight = new Button(292,160,80,30,"Default");
+        buttonDefaultCpsRight.setEnabled(false);
         buttonDefaultCpsRight.addActionListener(e -> textCpsRight.setText("25.0"));
         buttonExit = new Button(0,0,125,55,"\uD83E\uDC14 Exit");
         buttonExit.addActionListener(e -> this.dispose());
@@ -52,12 +55,26 @@ public class AppFrame extends JFrame implements ActionListener {
         labelCpsLeftClick = new Label(257,55,40,20,"cps");
         labelMsRightClick = new Label(257,135,40,20,"ms");
         labelCpsRightClick = new Label(257,165,40,20,"cps");
+        labelMsCpsSwitch = new Label(250,10,120,30,"Ms/Cps input");
+        labelMsCpsSwitch.setVisible(false);
         //=======================================================
         //Checkboxes settings
         leftOnOff = new CheckBox(135,80,120,20,"Disabled");
         leftOnOff.addActionListener(this);
         rightOnOff = new CheckBox(135,190,120,20,"Disabled");
         rightOnOff.addActionListener(this);
+        //=======================================================
+        //RadioButtons settings
+        msInput = new RadioButton(250,30,120,30,"Ms");
+        msInput.setVisible(false);
+        msInput.setSelected(true);
+        cpsInput = new RadioButton(250,50,120,30,"Cps");
+        cpsInput.setVisible(false);
+        ButtonGroup group = new ButtonGroup();
+        group.add(msInput);
+        group.add(cpsInput);
+        cpsInput.addActionListener(this);
+        msInput.addActionListener(this);
         //=======================================================
         //Textfields settings
         textMsLeft = new TextField(135,20,120,30);
@@ -68,37 +85,51 @@ public class AppFrame extends JFrame implements ActionListener {
         textMsRight.setText("40");
         textCpsRight = new TextField(135,160,120,30);
         textCpsRight.setText("25.0");
+        textCpsLeft.setEnabled(false);
+        textCpsRight.setEnabled(false);
 
         textMsLeft.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                textCpsLeft.setText(textMsLeft.ConvertMsToCPS(textMsLeft.getText()));
+                if(textMsLeft.isEnabled()) {
+                    textCpsLeft.setText(textMsLeft.ConvertMsCPS(textMsLeft.getText()));
+                }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                textCpsLeft.setText(textMsLeft.ConvertMsToCPS(textMsLeft.getText()));
+                if(textMsLeft.isEnabled()) {
+                    textCpsLeft.setText(textMsLeft.ConvertMsCPS(textMsLeft.getText()));
+                }
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                textCpsLeft.setText(textMsLeft.ConvertMsToCPS(textMsLeft.getText()));
+                if(textMsLeft.isEnabled()) {
+                    textCpsLeft.setText(textMsLeft.ConvertMsCPS(textMsLeft.getText()));
+                }
             }
         });
         textMsRight.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                textCpsRight.setText(textMsRight.ConvertMsToCPS(textMsRight.getText()));
+                if(textMsRight.isEnabled()) {
+                    textCpsRight.setText(textMsRight.ConvertMsCPS(textMsRight.getText()));
+                }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                textCpsRight.setText(textMsRight.ConvertMsToCPS(textMsRight.getText()));
+                if(textMsRight.isEnabled()) {
+                    textCpsRight.setText(textMsRight.ConvertMsCPS(textMsRight.getText()));
+                }
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                textCpsRight.setText(textMsRight.ConvertMsToCPS(textMsRight.getText()));
+                if(textMsRight.isEnabled()) {
+                    textCpsRight.setText(textMsRight.ConvertMsCPS(textMsRight.getText()));
+                }
             }
         });
         //=======================================================
@@ -117,12 +148,15 @@ public class AppFrame extends JFrame implements ActionListener {
         this.add(buttonBackFromSettings);
         this.add(leftOnOff);
         this.add(rightOnOff);
+        this.add(cpsInput);
+        this.add(msInput);
         this.add(labelLeftClick);
         this.add(labelRightClick);
         this.add(labelMsLeftClick);
         this.add(labelCpsLeftClick);
         this.add(labelMsRightClick);
         this.add(labelCpsRightClick);
+        this.add(labelMsCpsSwitch);
         this.add(background);
         //=======================================================
         //Repaint elements to be visible
@@ -153,6 +187,20 @@ public class AppFrame extends JFrame implements ActionListener {
         rightOnOff.setVisible(mainWindowState);
 
         buttonBackFromSettings.setVisible(!mainWindowState);
+        msInput.setVisible(!mainWindowState);
+        cpsInput.setVisible(!mainWindowState);
+        labelMsCpsSwitch.setVisible(!mainWindowState);
+    }
+    //Switch ms/cps
+    public void MsCpsSwitcher(boolean ms){
+        textCpsLeft.setEnabled(!ms);
+        textCpsRight.setEnabled(!ms);
+        buttonDefaultCpsLeft.setEnabled(!ms);
+        buttonDefaultCpsRight.setEnabled(!ms);
+        textMsLeft.setEnabled(ms);
+        textMsRight.setEnabled(ms);
+        buttonDefaultMsLeft.setEnabled(ms);
+        buttonDefaultMsRight.setEnabled(ms);
     }
     //Action listeners
     @Override
@@ -168,6 +216,12 @@ public class AppFrame extends JFrame implements ActionListener {
         }
         if(e.getSource()==buttonBackFromSettings){
             SettingMainChanger(true);
+        }
+        if(e.getSource()==msInput){
+            MsCpsSwitcher(true);
+        }
+        if(e.getSource()==cpsInput){
+            MsCpsSwitcher(false);
         }
         //=======================================================
     }

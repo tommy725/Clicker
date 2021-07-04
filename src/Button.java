@@ -15,8 +15,10 @@ public class Button extends JButton {
         this.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 //buttonReference().setOpaque(true);
-                buttonReference().setHorizontalAlignment(JButton.RIGHT);
-                buttonReference().setFont(new Font("Segoe",Font.BOLD,18));
+                if(buttonReference().isEnabled()){
+                    buttonReference().setHorizontalAlignment(JButton.RIGHT);
+                    buttonReference().setFont(new Font("Segoe",Font.BOLD,18));
+                }
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 //buttonReference().setOpaque(false);

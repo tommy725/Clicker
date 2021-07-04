@@ -7,7 +7,7 @@ public class CheckBox extends JCheckBox {
         this.setBounds(x,y,width,height);
         this.setFont(new Font("Segoe",Font.PLAIN,18));
         this.setForeground(Color.RED);
-        this.setBackground(new Color(100,100,100));
+        this.setOpaque(false);
         this.setFocusable(false);
     }
     public void changeState(){
