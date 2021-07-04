@@ -11,6 +11,7 @@ public class AppFrame extends JFrame implements ActionListener {
     Button buttonDefaultMsLeft, buttonDefaultCpsLeft, buttonExit, buttonSettings, buttonAbout, buttonDefaultMsRight, buttonDefaultCpsRight,buttonBackFromSettings;
     TextField textMsLeft, textCpsLeft, textMsRight, textCpsRight;
     Label labelLeftClick,labelRightClick,labelMsLeftClick,labelCpsLeftClick,labelMsRightClick,labelCpsRightClick;
+    CheckBox rightOnOff,leftOnOff;
     public AppFrame() throws HeadlessException {
         //Frame settings
         this.setTitle("Kambed clicker v2.0");
@@ -21,6 +22,7 @@ public class AppFrame extends JFrame implements ActionListener {
         ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("pictures/AppIcon.png")));
         this.setIconImage(image.getImage());
         this.getContentPane().setBackground(Color.lightGray);
+        //this.setBounds(100,100,400,260);
         //=======================================================
         //Elements settings
         background = new Background();
@@ -50,6 +52,12 @@ public class AppFrame extends JFrame implements ActionListener {
         labelCpsLeftClick = new Label(257,55,40,20,"cps");
         labelMsRightClick = new Label(257,135,40,20,"ms");
         labelCpsRightClick = new Label(257,165,40,20,"cps");
+        //=======================================================
+        //Checkboxes settings
+        leftOnOff = new CheckBox(135,80,120,20,"Disabled");
+        leftOnOff.addActionListener(this);
+        rightOnOff = new CheckBox(135,190,120,20,"Disabled");
+        rightOnOff.addActionListener(this);
         //=======================================================
         //Textfields settings
         textMsLeft = new TextField(135,20,120,30);
@@ -107,6 +115,8 @@ public class AppFrame extends JFrame implements ActionListener {
         this.add(buttonDefaultMsRight);
         this.add(buttonDefaultCpsRight);
         this.add(buttonBackFromSettings);
+        this.add(leftOnOff);
+        this.add(rightOnOff);
         this.add(labelLeftClick);
         this.add(labelRightClick);
         this.add(labelMsLeftClick);
@@ -120,51 +130,44 @@ public class AppFrame extends JFrame implements ActionListener {
         this.repaint();
         //=======================================================
     }
+    //Change visibility of elements
+    public void SettingMainChanger(boolean mainWindowState) {
+        textMsLeft.setVisible(mainWindowState);
+        textCpsLeft.setVisible(mainWindowState);
+        textMsRight.setVisible(mainWindowState);
+        textCpsRight.setVisible(mainWindowState);
+        buttonDefaultMsLeft.setVisible(mainWindowState);
+        buttonDefaultCpsLeft.setVisible(mainWindowState);
+        buttonExit.setVisible(mainWindowState);
+        buttonSettings.setVisible(mainWindowState);
+        buttonAbout.setVisible(mainWindowState);
+        buttonDefaultMsRight.setVisible(mainWindowState);
+        buttonDefaultCpsRight.setVisible(mainWindowState);
+        labelLeftClick.setVisible(mainWindowState);
+        labelRightClick.setVisible(mainWindowState);
+        labelCpsLeftClick.setVisible(mainWindowState);
+        labelCpsRightClick.setVisible(mainWindowState);
+        labelMsLeftClick.setVisible(mainWindowState);
+        labelMsRightClick.setVisible(mainWindowState);
+        leftOnOff.setVisible(mainWindowState);
+        rightOnOff.setVisible(mainWindowState);
 
-        //Acction listeners
+        buttonBackFromSettings.setVisible(!mainWindowState);
+    }
+    //Action listeners
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==leftOnOff){
+            leftOnOff.changeState();
+        }
+        if(e.getSource()==rightOnOff){
+            rightOnOff.changeState();
+        }
         if(e.getSource()== buttonSettings){
-            textMsLeft.setVisible(false);
-            textCpsLeft.setVisible(false);
-            textMsRight.setVisible(false);
-            textCpsRight.setVisible(false);
-            buttonDefaultMsLeft.setVisible(false);
-            buttonDefaultCpsLeft.setVisible(false);
-            buttonExit.setVisible(false);
-            buttonSettings.setVisible(false);
-            buttonAbout.setVisible(false);
-            buttonDefaultMsRight.setVisible(false);
-            buttonDefaultCpsRight.setVisible(false);
-            labelLeftClick.setVisible(false);
-            labelRightClick.setVisible(false);
-            labelCpsLeftClick.setVisible(false);
-            labelCpsRightClick.setVisible(false);
-            labelMsLeftClick.setVisible(false);
-            labelMsRightClick.setVisible(false);
-
-            buttonBackFromSettings.setVisible(true);
+            SettingMainChanger(false);
         }
         if(e.getSource()==buttonBackFromSettings){
-            textMsLeft.setVisible(true);
-            textCpsLeft.setVisible(true);
-            textMsRight.setVisible(true);
-            textCpsRight.setVisible(true);
-            buttonDefaultMsLeft.setVisible(true);
-            buttonDefaultCpsLeft.setVisible(true);
-            buttonExit.setVisible(true);
-            buttonSettings.setVisible(true);
-            buttonAbout.setVisible(true);
-            buttonDefaultMsRight.setVisible(true);
-            buttonDefaultCpsRight.setVisible(true);
-            labelLeftClick.setVisible(true);
-            labelRightClick.setVisible(true);
-            labelCpsLeftClick.setVisible(true);
-            labelCpsRightClick.setVisible(true);
-            labelMsLeftClick.setVisible(true);
-            labelMsRightClick.setVisible(true);
-
-            buttonBackFromSettings.setVisible(false);
+            SettingMainChanger(true);
         }
         //=======================================================
     }
