@@ -2,6 +2,8 @@ import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
+import org.jnativehook.mouse.NativeMouseEvent;
+import org.jnativehook.mouse.NativeMouseListener;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -9,12 +11,13 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.WindowEvent;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AppFrame extends JFrame implements ActionListener, NativeKeyListener {
+public class AppFrame extends JFrame implements ActionListener, NativeKeyListener, NativeMouseListener {
     boolean mainWindow;
     Background background;
     Button buttonDefaultMsLeft, buttonDefaultCpsLeft, buttonExit, buttonSettings, buttonAbout, buttonDefaultMsRight, buttonDefaultCpsRight,buttonBackFromSettings;
@@ -33,6 +36,7 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
 //        }
         //Frame settings
         this.setTitle("Kambed clicker v2.0");
+        this.setBounds(100,100,400,260);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setVisible(true);
@@ -40,7 +44,6 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
         ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("pictures/AppIcon.png")));
         this.setIconImage(image.getImage());
         this.getContentPane().setBackground(Color.lightGray);
-        //this.setBounds(100,100,400,260);
         //=======================================================
         //Elements settings
         background = new Background();
@@ -227,6 +230,8 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
             e.printStackTrace();
         }
         GlobalScreen.addNativeKeyListener(this);
+        //NativeMouseListener
+        GlobalScreen.addNativeMouseListener(this);
         //=======================================================
         //Adding all things to frame
         this.add(textMsLeft);
@@ -349,7 +354,7 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
 
         if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_ESCAPE){
             if(mainWindow){
-                int exit = JOptionPane.showConfirmDialog(background,"Next [ESC] will exit the program","EXIT",JOptionPane.YES_NO_OPTION);
+                int exit = JOptionPane.showConfirmDialog(background,"Next [ESC] will close the program","EXIT?",JOptionPane.YES_NO_OPTION);
                 if(exit==0 || exit==-1){
                     this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
                 }
@@ -363,5 +368,20 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
         if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
         System.out.println("Released "+nativeKeyEvent.getKeyChar());
+    }
+
+    @Override
+    public void nativeMouseClicked(NativeMouseEvent nativeMouseEvent) {
+        System.out.println("Clicked "+nativeMouseEvent.getButton());
+    }
+
+    @Override
+    public void nativeMousePressed(NativeMouseEvent nativeMouseEvent) {
+        System.out.println("Pressed "+nativeMouseEvent.getButton());
+    }
+
+    @Override
+    public void nativeMouseReleased(NativeMouseEvent nativeMouseEvent) {
+        System.out.println("Released "+nativeMouseEvent.getButton());
     }
 }
