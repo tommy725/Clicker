@@ -1,3 +1,8 @@
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
+import org.jnativehook.keyboard.NativeKeyEvent;
+import org.jnativehook.keyboard.NativeKeyListener;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -5,8 +10,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class AppFrame extends JFrame implements ActionListener {
+public class AppFrame extends JFrame implements ActionListener, NativeKeyListener {
     Background background;
     Button buttonDefaultMsLeft, buttonDefaultCpsLeft, buttonExit, buttonSettings, buttonAbout, buttonDefaultMsRight, buttonDefaultCpsRight,buttonBackFromSettings;
     TextField textMsLeft, textCpsLeft, textMsRight, textCpsRight;
@@ -14,6 +21,14 @@ public class AppFrame extends JFrame implements ActionListener {
     CheckBox rightOnOff,leftOnOff;
     RadioButton msInput,cpsInput,holdMode,switchMode;
     public AppFrame() throws HeadlessException {
+//        try {
+//            Click bot = new Click();
+//            for(int i=0;i<10;i++){
+//                bot.leftClick(1000);
+//            }
+//        } catch (AWTException | InterruptedException e) {
+//            e.printStackTrace();
+//        }
         //Frame settings
         this.setTitle("Kambed clicker v2.0");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,7 +58,7 @@ public class AppFrame extends JFrame implements ActionListener {
         buttonSettings = new Button(0,110,125,55,"Settings");
         buttonSettings.addActionListener(this);
         buttonAbout = new Button(0,165,125,55,"About");
-        buttonAbout.addActionListener(e -> JOptionPane.showMessageDialog(background,"Auto clicker v2.0 \nAuthor: Kamil 'kambed' Bednarek","About",1));
+        buttonAbout.addActionListener(e -> JOptionPane.showMessageDialog(background,"Auto clicker v2.0 \nAuthor: Kamil 'kambed' Bednarek","About",JOptionPane.INFORMATION_MESSAGE));
         buttonBackFromSettings = new Button(0,0,125,55,"\uD83E\uDC14 Back");
         buttonBackFromSettings.setVisible(false);
         buttonBackFromSettings.addActionListener(this);
@@ -190,6 +205,17 @@ public class AppFrame extends JFrame implements ActionListener {
             }
         });
         //=======================================================
+        //NativeKeyListener
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
+        logger.setUseParentHandlers(false);
+        try {
+            GlobalScreen.registerNativeHook();
+        } catch (NativeHookException e) {
+            e.printStackTrace();
+        }
+        GlobalScreen.addNativeKeyListener(this);
+        //=======================================================
         //Adding all things to frame
         this.add(textMsLeft);
         this.add(textCpsLeft);
@@ -287,5 +313,23 @@ public class AppFrame extends JFrame implements ActionListener {
             MsCpsSwitcher(false);
         }
         //=======================================================
+    }
+    //NativeKeyListener
+    @Override
+    public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
+        if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
+        System.out.println("Typed "+nativeKeyEvent.getKeyChar());
+    }
+
+    @Override
+    public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
+        if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
+        System.out.println("Pressed "+nativeKeyEvent.getKeyChar());
+    }
+
+    @Override
+    public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
+        if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
+        System.out.println("Released "+nativeKeyEvent.getKeyChar());
     }
 }

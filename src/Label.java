@@ -7,5 +7,6 @@ public class Label extends JLabel {
         this.setForeground(Color.WHITE);
         this.setBounds(x,y,width,height);
         this.setText(text);
+        this.setFocusable(false);
     }
 }
