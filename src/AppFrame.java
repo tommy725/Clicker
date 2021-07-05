@@ -9,16 +9,18 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AppFrame extends JFrame implements ActionListener, NativeKeyListener {
+    boolean mainWindow;
     Background background;
     Button buttonDefaultMsLeft, buttonDefaultCpsLeft, buttonExit, buttonSettings, buttonAbout, buttonDefaultMsRight, buttonDefaultCpsRight,buttonBackFromSettings;
-    TextField textMsLeft, textCpsLeft, textMsRight, textCpsRight;
-    Label labelLeftClick,labelRightClick,labelMsLeftClick,labelCpsLeftClick,labelMsRightClick,labelCpsRightClick,labelMsCpsSwitch,labelModeSwitch;
-    CheckBox rightOnOff,leftOnOff;
+    TextField textMsLeft, textCpsLeft, textMsRight, textCpsRight,textRandomizer;
+    Label labelLeftClick,labelRightClick,labelMsLeftClick,labelCpsLeftClick,labelMsRightClick,labelCpsRightClick,labelMsCpsSwitch,labelModeSwitch,labelRandomizer,labelPercent;
+    CheckBox rightOnOff,leftOnOff,randomizer;
     RadioButton msInput,cpsInput,holdMode,switchMode;
     public AppFrame() throws HeadlessException {
 //        try {
@@ -54,7 +56,7 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
         buttonDefaultCpsRight.setEnabled(false);
         buttonDefaultCpsRight.addActionListener(e -> textCpsRight.setText("25.0"));
         buttonExit = new Button(0,0,125,55,"\uD83E\uDC14 Exit");
-        buttonExit.addActionListener(e -> this.dispose());
+        buttonExit.addActionListener(e -> this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING)));
         buttonSettings = new Button(0,110,125,55,"Settings");
         buttonSettings.addActionListener(this);
         buttonAbout = new Button(0,165,125,55,"About");
@@ -70,22 +72,29 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
         labelCpsLeftClick = new Label(257,55,40,20,"cps");
         labelMsRightClick = new Label(257,135,40,20,"ms");
         labelCpsRightClick = new Label(257,165,40,20,"cps");
-        labelMsCpsSwitch = new Label(230,10,150,30,"Ms/Cps input");
+        labelMsCpsSwitch = new Label(230,0,150,30,"Ms/Cps input");
         labelMsCpsSwitch.setVisible(false);
-        labelModeSwitch = new Label(230,80,150,30,"Switch/Hold mode");
+        labelModeSwitch = new Label(230,70,150,30,"Switch/Hold mode");
         labelModeSwitch.setVisible(false);
+        labelRandomizer = new Label(230,140,150,30,"AntyDetection");
+        labelRandomizer.setVisible(false);
+        labelPercent = new Label(290,185,30,30,"%");
+        labelPercent.setVisible(false);
         //=======================================================
         //Checkboxes settings
         leftOnOff = new CheckBox(135,80,120,20,"Disabled");
         leftOnOff.addActionListener(this);
         rightOnOff = new CheckBox(135,190,120,20,"Disabled");
         rightOnOff.addActionListener(this);
+        randomizer = new CheckBox(240,160,150,30,"Ms randomized");
+        randomizer.setVisible(false);
+        randomizer.setForeground(Color.WHITE);
         //=======================================================
         //RadioButtons settings
-        msInput = new RadioButton(250,30,120,30,"Ms");
+        msInput = new RadioButton(250,20,120,30,"Ms");
         msInput.setVisible(false);
         msInput.setSelected(true);
-        cpsInput = new RadioButton(250,50,120,30,"Cps");
+        cpsInput = new RadioButton(250,40,120,30,"Cps");
         cpsInput.setVisible(false);
         ButtonGroup group = new ButtonGroup();
         group.add(msInput);
@@ -93,9 +102,9 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
         cpsInput.addActionListener(this);
         msInput.addActionListener(this);
 
-        holdMode = new RadioButton(250,120,120,30,"Hold");
+        holdMode = new RadioButton(250,110,120,30,"Hold");
         holdMode.setVisible(false);
-        switchMode = new RadioButton(250,100,120,30,"Switch");
+        switchMode = new RadioButton(250,90,120,30,"Switch");
         switchMode.setVisible(false);
         switchMode.setSelected(true);
         ButtonGroup group2 = new ButtonGroup();
@@ -115,6 +124,9 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
         textCpsRight.setText("25.0");
         textCpsLeft.setEnabled(false);
         textCpsRight.setEnabled(false);
+        textRandomizer = new TextField(250,185,40,30);
+        textRandomizer.setVisible(false);
+        textRandomizer.setText("5");
 
         textMsLeft.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -243,6 +255,10 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
         this.add(holdMode);
         this.add(switchMode);
         this.add(labelModeSwitch);
+        this.add(labelRandomizer);
+        this.add(randomizer);
+        this.add(textRandomizer);
+        this.add(labelPercent);
         this.add(background);
         //=======================================================
         //Repaint elements to be visible
@@ -252,6 +268,7 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
     }
     //Change visibility of elements
     public void SettingMainChanger(boolean mainWindowState) {
+        mainWindow=mainWindowState;
         textMsLeft.setVisible(mainWindowState);
         textCpsLeft.setVisible(mainWindowState);
         textMsRight.setVisible(mainWindowState);
@@ -279,6 +296,10 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
         holdMode.setVisible(!mainWindowState);
         switchMode.setVisible(!mainWindowState);
         labelModeSwitch.setVisible(!mainWindowState);
+        labelRandomizer.setVisible(!mainWindowState);
+        randomizer.setVisible(!mainWindowState);
+        textRandomizer.setVisible(!mainWindowState);
+        labelPercent.setVisible(!mainWindowState);
     }
     //Switch ms/cps
     public void MsCpsSwitcher(boolean ms){
@@ -325,6 +346,17 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
         if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
         System.out.println("Pressed "+nativeKeyEvent.getKeyChar());
+
+        if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_ESCAPE){
+            if(mainWindow){
+                int exit = JOptionPane.showConfirmDialog(background,"Next [ESC] will exit the program","EXIT",JOptionPane.YES_NO_OPTION);
+                if(exit==0 || exit==-1){
+                    this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+                }
+            }else{
+                SettingMainChanger(true);
+            }
+        }
     }
 
     @Override
