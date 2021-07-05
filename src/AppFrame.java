@@ -10,9 +10,9 @@ public class AppFrame extends JFrame implements ActionListener {
     Background background;
     Button buttonDefaultMsLeft, buttonDefaultCpsLeft, buttonExit, buttonSettings, buttonAbout, buttonDefaultMsRight, buttonDefaultCpsRight,buttonBackFromSettings;
     TextField textMsLeft, textCpsLeft, textMsRight, textCpsRight;
-    Label labelLeftClick,labelRightClick,labelMsLeftClick,labelCpsLeftClick,labelMsRightClick,labelCpsRightClick,labelMsCpsSwitch;
+    Label labelLeftClick,labelRightClick,labelMsLeftClick,labelCpsLeftClick,labelMsRightClick,labelCpsRightClick,labelMsCpsSwitch,labelModeSwitch;
     CheckBox rightOnOff,leftOnOff;
-    RadioButton msInput,cpsInput;
+    RadioButton msInput,cpsInput,holdMode,switchMode;
     public AppFrame() throws HeadlessException {
         //Frame settings
         this.setTitle("Kambed clicker v2.0");
@@ -55,8 +55,10 @@ public class AppFrame extends JFrame implements ActionListener {
         labelCpsLeftClick = new Label(257,55,40,20,"cps");
         labelMsRightClick = new Label(257,135,40,20,"ms");
         labelCpsRightClick = new Label(257,165,40,20,"cps");
-        labelMsCpsSwitch = new Label(250,10,120,30,"Ms/Cps input");
+        labelMsCpsSwitch = new Label(230,10,150,30,"Ms/Cps input");
         labelMsCpsSwitch.setVisible(false);
+        labelModeSwitch = new Label(230,80,150,30,"Switch/Hold mode");
+        labelModeSwitch.setVisible(false);
         //=======================================================
         //Checkboxes settings
         leftOnOff = new CheckBox(135,80,120,20,"Disabled");
@@ -75,6 +77,17 @@ public class AppFrame extends JFrame implements ActionListener {
         group.add(cpsInput);
         cpsInput.addActionListener(this);
         msInput.addActionListener(this);
+
+        holdMode = new RadioButton(250,120,120,30,"Hold");
+        holdMode.setVisible(false);
+        switchMode = new RadioButton(250,100,120,30,"Switch");
+        switchMode.setVisible(false);
+        switchMode.setSelected(true);
+        ButtonGroup group2 = new ButtonGroup();
+        group2.add(switchMode);
+        group2.add(holdMode);
+        switchMode.addActionListener(this);
+        holdMode.addActionListener(this);
         //=======================================================
         //Textfields settings
         textMsLeft = new TextField(135,20,120,30);
@@ -201,6 +214,9 @@ public class AppFrame extends JFrame implements ActionListener {
         this.add(labelMsRightClick);
         this.add(labelCpsRightClick);
         this.add(labelMsCpsSwitch);
+        this.add(holdMode);
+        this.add(switchMode);
+        this.add(labelModeSwitch);
         this.add(background);
         //=======================================================
         //Repaint elements to be visible
@@ -234,6 +250,9 @@ public class AppFrame extends JFrame implements ActionListener {
         msInput.setVisible(!mainWindowState);
         cpsInput.setVisible(!mainWindowState);
         labelMsCpsSwitch.setVisible(!mainWindowState);
+        holdMode.setVisible(!mainWindowState);
+        switchMode.setVisible(!mainWindowState);
+        labelModeSwitch.setVisible(!mainWindowState);
     }
     //Switch ms/cps
     public void MsCpsSwitcher(boolean ms){
