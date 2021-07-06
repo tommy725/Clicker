@@ -11,7 +11,6 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.WindowEvent;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -22,9 +21,10 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
     Background background;
     Button buttonDefaultMsLeft, buttonDefaultCpsLeft, buttonExit, buttonSettings, buttonAbout, buttonDefaultMsRight, buttonDefaultCpsRight,buttonBackFromSettings;
     TextField textMsLeft, textCpsLeft, textMsRight, textCpsRight,textRandomizer;
-    Label labelLeftClick,labelRightClick,labelMsLeftClick,labelCpsLeftClick,labelMsRightClick,labelCpsRightClick,labelMsCpsSwitch,labelModeSwitch,labelRandomizer,labelPercent;
+    Label labelLeftClick,labelRightClick,labelMsLeftClick,labelCpsLeftClick,labelMsRightClick,labelCpsRightClick,labelMsCpsSwitch,labelModeSwitch,labelRandomizer,labelPercent,labelRightHotkey,labelLeftHotkey;
     CheckBox rightOnOff,leftOnOff,randomizer;
     RadioButton msInput,cpsInput,holdMode,switchMode;
+    ComboBox comboboxLC,comboboxRC;
     public AppFrame() throws HeadlessException {
 //        try {
 //            Click bot = new Click();
@@ -75,29 +75,33 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
         labelCpsLeftClick = new Label(257,55,40,20,"cps");
         labelMsRightClick = new Label(257,135,40,20,"ms");
         labelCpsRightClick = new Label(257,165,40,20,"cps");
-        labelMsCpsSwitch = new Label(230,0,150,30,"Ms/Cps input");
+        labelMsCpsSwitch = new Label(210,0,150,30,"Ms/Cps input");
         labelMsCpsSwitch.setVisible(false);
-        labelModeSwitch = new Label(230,70,150,30,"Switch/Hold mode");
+        labelModeSwitch = new Label(210,70,150,30,"Switch/Hold mode");
         labelModeSwitch.setVisible(false);
-        labelRandomizer = new Label(230,140,150,30,"AntyDetection");
+        labelRandomizer = new Label(210,140,150,30,"AntiDetection");
         labelRandomizer.setVisible(false);
-        labelPercent = new Label(290,185,30,30,"%");
+        labelPercent = new Label(275,185,30,30,"%");
         labelPercent.setVisible(false);
+        labelRightHotkey = new Label(20,140,150,30,"Right click hotkey");
+        labelRightHotkey.setVisible(false);
+        labelLeftHotkey = new Label(20,70,150,30,"Left click hotkey");
+        labelLeftHotkey.setVisible(false);
         //=======================================================
         //Checkboxes settings
         leftOnOff = new CheckBox(135,80,120,20,"Disabled");
         leftOnOff.addActionListener(this);
         rightOnOff = new CheckBox(135,190,120,20,"Disabled");
         rightOnOff.addActionListener(this);
-        randomizer = new CheckBox(240,160,150,30,"Ms randomized");
+        randomizer = new CheckBox(230,160,150,30,"Ms randomized");
         randomizer.setVisible(false);
         randomizer.setForeground(Color.WHITE);
         //=======================================================
         //RadioButtons settings
-        msInput = new RadioButton(250,20,120,30,"Ms");
+        msInput = new RadioButton(230,20,120,30,"Ms");
         msInput.setVisible(false);
         msInput.setSelected(true);
-        cpsInput = new RadioButton(250,40,120,30,"Cps");
+        cpsInput = new RadioButton(230,40,120,30,"Cps");
         cpsInput.setVisible(false);
         ButtonGroup group = new ButtonGroup();
         group.add(msInput);
@@ -105,9 +109,9 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
         cpsInput.addActionListener(this);
         msInput.addActionListener(this);
 
-        holdMode = new RadioButton(250,110,120,30,"Hold");
+        holdMode = new RadioButton(230,110,120,30,"Hold");
         holdMode.setVisible(false);
-        switchMode = new RadioButton(250,90,120,30,"Switch");
+        switchMode = new RadioButton(230,90,120,30,"Switch");
         switchMode.setVisible(false);
         switchMode.setSelected(true);
         ButtonGroup group2 = new ButtonGroup();
@@ -116,7 +120,18 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
         switchMode.addActionListener(this);
         holdMode.addActionListener(this);
         //=======================================================
-        //Textfields settings
+        //Combobox settings
+        comboboxLC = new ComboBox(25,100,110,30);
+        comboboxLC.addActionListener(this);
+        comboboxLC.setVisible(false);
+        comboboxLC.setSelectedItem("MouseButton4");
+
+        comboboxRC = new ComboBox(25,170,110,30);
+        comboboxRC.addActionListener(this);
+        comboboxRC.setVisible(false);
+        comboboxRC.setSelectedItem("MouseButton5");
+        //=======================================================
+        //TextField settings
         textMsLeft = new TextField(135,20,120,30);
         textMsLeft.setText("80.0");
         textCpsLeft = new TextField(135,50,120,30);
@@ -127,7 +142,7 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
         textCpsRight.setText("25.0");
         textCpsLeft.setEnabled(false);
         textCpsRight.setEnabled(false);
-        textRandomizer = new TextField(250,185,40,30);
+        textRandomizer = new TextField(235,185,40,30);
         textRandomizer.setVisible(false);
         textRandomizer.setText("5");
 
@@ -264,6 +279,10 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
         this.add(randomizer);
         this.add(textRandomizer);
         this.add(labelPercent);
+        this.add(comboboxRC);
+        this.add(comboboxLC);
+        this.add(labelRightHotkey);
+        this.add(labelLeftHotkey);
         this.add(background);
         //=======================================================
         //Repaint elements to be visible
@@ -305,6 +324,10 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
         randomizer.setVisible(!mainWindowState);
         textRandomizer.setVisible(!mainWindowState);
         labelPercent.setVisible(!mainWindowState);
+        comboboxRC.setVisible(!mainWindowState);
+        comboboxLC.setVisible(!mainWindowState);
+        labelRightHotkey.setVisible(!mainWindowState);
+        labelLeftHotkey.setVisible(!mainWindowState);
     }
     //Switch ms/cps
     public void MsCpsSwitcher(boolean ms){
@@ -338,19 +361,35 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
         if(e.getSource()==cpsInput){
             MsCpsSwitcher(false);
         }
+        if(e.getSource()==comboboxLC){
+            if(comboboxRC!=null){
+                if(comboboxLC.getSelectedItem()==comboboxRC.getSelectedItem() && comboboxLC.getSelectedIndex()!=0){
+                    JOptionPane.showMessageDialog(background,"Hotkeys cannot be the same!","Error!",JOptionPane.ERROR_MESSAGE);
+                    comboboxLC.setSelectedIndex(0);
+                }
+            }
+        }
+        if(e.getSource()==comboboxRC){
+            if(comboboxLC!=null){
+                if(comboboxRC.getSelectedItem()==comboboxLC.getSelectedItem() && comboboxRC.getSelectedIndex()!=0){
+                    JOptionPane.showMessageDialog(background,"Hotkeys cannot be the same!","Error!",JOptionPane.ERROR_MESSAGE);
+                    comboboxRC.setSelectedIndex(0);
+                }
+            }
+        }
         //=======================================================
     }
     //NativeKeyListener
     @Override
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
-        if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
-        System.out.println("Typed "+nativeKeyEvent.getKeyChar());
+        //if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
+        //System.out.println("Typed "+nativeKeyEvent.getKeyChar());
     }
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-        if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
-        System.out.println("Pressed "+nativeKeyEvent.getKeyChar());
+        //if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
+        //System.out.println("Pressed "+nativeKeyEvent.getKeyChar());
 
         if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_ESCAPE){
             if(mainWindow){
@@ -366,22 +405,22 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
 
     @Override
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
-        if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
-        System.out.println("Released "+nativeKeyEvent.getKeyChar());
+        //if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
+        //System.out.println("Released "+nativeKeyEvent.getKeyChar());
     }
 
     @Override
     public void nativeMouseClicked(NativeMouseEvent nativeMouseEvent) {
-        System.out.println("Clicked "+nativeMouseEvent.getButton());
+        //System.out.println("Clicked "+nativeMouseEvent.getButton());
     }
 
     @Override
     public void nativeMousePressed(NativeMouseEvent nativeMouseEvent) {
-        System.out.println("Pressed "+nativeMouseEvent.getButton());
+        //System.out.println("Pressed "+nativeMouseEvent.getButton());
     }
 
     @Override
     public void nativeMouseReleased(NativeMouseEvent nativeMouseEvent) {
-        System.out.println("Released "+nativeMouseEvent.getButton());
+        //System.out.println("Released "+nativeMouseEvent.getButton());
     }
 }
