@@ -20,4 +20,16 @@ public class CheckBox extends JCheckBox {
             this.setForeground(Color.RED);
         }
     }
+    public void changeStatewithButton(){
+        if(!this.isSelected()){
+            this.setText("Enabled");
+            this.setForeground(Color.GREEN);
+            this.setSelected(true);
+        }
+        else{
+            this.setText("Disabled");
+            this.setForeground(Color.RED);
+            this.setSelected(false);
+        }
+    }
 }

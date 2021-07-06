@@ -382,12 +382,82 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
     //NativeKeyListener
     @Override
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
+        switch(comboboxRC.getSelectedIndex()){
+            case 1:
+                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F1){
+                    System.out.println("Typed "+nativeKeyEvent.getKeyChar());
+                }
+                break;
+            case 2:
+        }
         //if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
         //System.out.println("Typed "+nativeKeyEvent.getKeyChar());
     }
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
+        switch(comboboxRC.getSelectedIndex()){
+            case 1:
+                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F1){
+                    rightOnOff.changeStatewithButton();
+                }
+                break;
+            case 2:
+                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F2){
+                    rightOnOff.changeStatewithButton();
+                }
+                break;
+            case 3:
+                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F3){
+                    rightOnOff.changeStatewithButton();
+                }
+                break;
+            case 4:
+                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F4){
+                    rightOnOff.changeStatewithButton();
+                }
+                break;
+            case 5:
+                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F5){
+                    rightOnOff.changeStatewithButton();
+                }
+                break;
+            case 6:
+                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F6){
+                    rightOnOff.changeStatewithButton();
+                }
+                break;
+            case 7:
+                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F7){
+                    rightOnOff.changeStatewithButton();
+                }
+                break;
+            case 8:
+                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8){
+                    rightOnOff.changeStatewithButton();
+                }
+                break;
+            case 9:
+                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F9){
+                    rightOnOff.changeStatewithButton();
+                }
+                break;
+            case 10:
+                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F10){
+                    rightOnOff.changeStatewithButton();
+                }
+                break;
+            case 11:
+                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F11){
+                    rightOnOff.changeStatewithButton();
+                }
+                break;
+            case 12:
+                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F12){
+                    rightOnOff.changeStatewithButton();
+                }
+                break;
+        }
         //if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
         //System.out.println("Pressed "+nativeKeyEvent.getKeyChar());
 
