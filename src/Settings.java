@@ -11,7 +11,7 @@ public class Settings {
     public Settings() {
     }
 
-    public Settings(boolean inputInCPS, boolean holdMode, boolean msRandomizer, int randomPercent, String leftHotkey, String rightHotkey, int leftMs, int rightMs) {
+    public Settings(boolean inputInCPS, boolean holdMode, boolean msRandomizer, int randomPercent, String leftHotkey, String rightHotkey, double leftMs, double rightMs) {
         this.inputInCPS = inputInCPS;
         this.holdMode = holdMode;
         this.msRandomizer = msRandomizer;
