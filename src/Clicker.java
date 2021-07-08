@@ -17,7 +17,7 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
     Map<Integer,Integer> keysMap;
     AppFrame frame;
     Click click;
-    boolean holded1,holded2;
+    boolean heldR, heldL;
     public Clicker() {
         //GUI turn on
         frame = new AppFrame();
@@ -61,6 +61,26 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
         keysMap.put(15,NativeMouseEvent.BUTTON5);
         //=======================================================
     }
+    public void LeftClicker(){
+        System.out.println("LEFT CLICKER");
+        while(frame.leftOnOff.isSelected()){
+            try{
+                click.leftClick((int)Double.parseDouble(frame.textMsLeft.getText()));
+            }catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void RightClicker(){
+        System.out.println("RIGHT CLICKER");
+        while(frame.rightOnOff.isSelected()){
+            try{
+                click.rightClick((int)Double.parseDouble(frame.textMsRight.getText()));
+            }catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     //NativeKeyListener
     @Override
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
@@ -70,16 +90,16 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
         if(frame.comboboxRC.getSelectedIndex()<13) {
-            if(!holded1) {
+            if(!heldR) {
                 if (nativeKeyEvent.getKeyCode() == keysMap.get(frame.comboboxRC.getSelectedIndex())) {
-                    holded1 = true;
+                    heldR = true;
                     frame.rightOnOff.changeStatewithButton();
                     //System.out.println("Pressed R" + nativeKeyEvent.getKeyChar());
                 }
             }
-            if(!holded2) {
+            if(!heldL) {
                 if (nativeKeyEvent.getKeyCode() == keysMap.get(frame.comboboxLC.getSelectedIndex())) {
-                    holded2 = true;
+                    heldL = true;
                     frame.leftOnOff.changeStatewithButton();
                     //System.out.println("Pressed L" + nativeKeyEvent.getKeyChar());
                 }
@@ -102,14 +122,14 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
         if(frame.comboboxRC.getSelectedIndex()<13){
             if(nativeKeyEvent.getKeyCode()==keysMap.get(frame.comboboxRC.getSelectedIndex())){
-                holded1=false;
+                heldR =false;
                 if(frame.holdMode.isSelected()) {
                     frame.rightOnOff.changeStatewithButton();
                     //System.out.println("Released R " + nativeKeyEvent.getKeyChar());
                 }
             }
             if(nativeKeyEvent.getKeyCode()==keysMap.get(frame.comboboxLC.getSelectedIndex())){
-                holded2=false;
+                heldL =false;
                 if(frame.holdMode.isSelected()) {
                     frame.leftOnOff.changeStatewithButton();
                     //System.out.println("Released L " + nativeKeyEvent.getKeyChar());
@@ -127,16 +147,16 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
     @Override
     public void nativeMousePressed(NativeMouseEvent nativeMouseEvent) {
             if (frame.comboboxRC.getSelectedIndex() >= 13) {
-                if(!holded1) {
+                if(!heldR) {
                     if (nativeMouseEvent.getButton() == keysMap.get(frame.comboboxRC.getSelectedIndex())) {
-                        holded1 = true;
+                        heldR = true;
                         frame.rightOnOff.changeStatewithButton();
                         //System.out.println("Pressed R Mouse" + nativeMouseEvent.getButton());
                     }
                 }
-                if(!holded2) {
+                if(!heldL) {
                     if (nativeMouseEvent.getButton() == keysMap.get(frame.comboboxLC.getSelectedIndex())) {
-                        holded2 = true;
+                        heldL = true;
                         frame.leftOnOff.changeStatewithButton();
                         //System.out.println("Pressed L Mouse" + nativeMouseEvent.getButton());
                     }
@@ -148,14 +168,14 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
     public void nativeMouseReleased(NativeMouseEvent nativeMouseEvent) {
         if(frame.comboboxRC.getSelectedIndex()>=13) {
             if (nativeMouseEvent.getButton() == keysMap.get(frame.comboboxRC.getSelectedIndex())) {
-                holded1=false;
+                heldR =false;
                 if(frame.holdMode.isSelected()){
                     frame.rightOnOff.changeStatewithButton();
                     //System.out.println("Released R Mouse" + nativeMouseEvent.getButton());
                 }
             }
             if (nativeMouseEvent.getButton() == keysMap.get(frame.comboboxLC.getSelectedIndex())) {
-                holded2=false;
+                heldL =false;
                 if(frame.holdMode.isSelected()){
                     frame.leftOnOff.changeStatewithButton();
                     //System.out.println("Released L Mouse" + nativeMouseEvent.getButton());
