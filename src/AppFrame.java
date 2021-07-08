@@ -12,7 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,6 +25,7 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
     CheckBox rightOnOff,leftOnOff,randomizer;
     RadioButton msInput,cpsInput,holdMode,switchMode;
     ComboBox comboboxLC,comboboxRC;
+    Map<Integer,Integer> keysMap;
     public AppFrame() throws HeadlessException {
 //        try {
 //            Click bot = new Click();
@@ -248,6 +249,24 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
         //NativeMouseListener
         GlobalScreen.addNativeMouseListener(this);
         //=======================================================
+        //HashMap for keyCodes
+        keysMap=new HashMap<>();
+        keysMap.put(1,NativeKeyEvent.VC_F1);
+        keysMap.put(2,NativeKeyEvent.VC_F2);
+        keysMap.put(3,NativeKeyEvent.VC_F3);
+        keysMap.put(4,NativeKeyEvent.VC_F4);
+        keysMap.put(5,NativeKeyEvent.VC_F5);
+        keysMap.put(6,NativeKeyEvent.VC_F6);
+        keysMap.put(7,NativeKeyEvent.VC_F7);
+        keysMap.put(8,NativeKeyEvent.VC_F8);
+        keysMap.put(9,NativeKeyEvent.VC_F9);
+        keysMap.put(10,NativeKeyEvent.VC_F10);
+        keysMap.put(11,NativeKeyEvent.VC_F11);
+        keysMap.put(12,NativeKeyEvent.VC_F12);
+        keysMap.put(13,NativeMouseEvent.BUTTON3);
+        keysMap.put(14,NativeMouseEvent.BUTTON4);
+        keysMap.put(15,NativeMouseEvent.BUTTON5);
+        //=======================================================
         //Adding all things to frame
         this.add(textMsLeft);
         this.add(textCpsLeft);
@@ -382,84 +401,15 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
     //NativeKeyListener
     @Override
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
-        switch(comboboxRC.getSelectedIndex()){
-            case 1:
-                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F1){
-                    System.out.println("Typed "+nativeKeyEvent.getKeyChar());
-                }
-                break;
-            case 2:
-        }
-        //if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
-        //System.out.println("Typed "+nativeKeyEvent.getKeyChar());
     }
-
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-        switch(comboboxRC.getSelectedIndex()){
-            case 1:
-                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F1){
-                    rightOnOff.changeStatewithButton();
-                }
-                break;
-            case 2:
-                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F2){
-                    rightOnOff.changeStatewithButton();
-                }
-                break;
-            case 3:
-                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F3){
-                    rightOnOff.changeStatewithButton();
-                }
-                break;
-            case 4:
-                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F4){
-                    rightOnOff.changeStatewithButton();
-                }
-                break;
-            case 5:
-                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F5){
-                    rightOnOff.changeStatewithButton();
-                }
-                break;
-            case 6:
-                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F6){
-                    rightOnOff.changeStatewithButton();
-                }
-                break;
-            case 7:
-                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F7){
-                    rightOnOff.changeStatewithButton();
-                }
-                break;
-            case 8:
-                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8){
-                    rightOnOff.changeStatewithButton();
-                }
-                break;
-            case 9:
-                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F9){
-                    rightOnOff.changeStatewithButton();
-                }
-                break;
-            case 10:
-                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F10){
-                    rightOnOff.changeStatewithButton();
-                }
-                break;
-            case 11:
-                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F11){
-                    rightOnOff.changeStatewithButton();
-                }
-                break;
-            case 12:
-                if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F12){
-                    rightOnOff.changeStatewithButton();
-                }
-                break;
+        if(nativeKeyEvent.getKeyCode()==keysMap.get(comboboxRC.getSelectedIndex())){
+            System.out.println("Pressed R"+nativeKeyEvent.getKeyChar());
         }
-        //if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
-        //System.out.println("Pressed "+nativeKeyEvent.getKeyChar());
+        if(nativeKeyEvent.getKeyCode()==keysMap.get(comboboxLC.getSelectedIndex())){
+            System.out.println("Pressed L"+nativeKeyEvent.getKeyChar());
+        }
 
         if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_ESCAPE){
             if(mainWindow){
@@ -472,25 +422,38 @@ public class AppFrame extends JFrame implements ActionListener, NativeKeyListene
             }
         }
     }
-
     @Override
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
-        //if(nativeKeyEvent.getKeyCode()==NativeKeyEvent.VC_F8)
-        //System.out.println("Released "+nativeKeyEvent.getKeyChar());
+        if(nativeKeyEvent.getKeyCode()==keysMap.get(comboboxRC.getSelectedIndex())){
+            System.out.println("Released R "+nativeKeyEvent.getKeyChar());
+        }
+        if(nativeKeyEvent.getKeyCode()==keysMap.get(comboboxLC.getSelectedIndex())){
+            System.out.println("Released L "+nativeKeyEvent.getKeyChar());
+        }
     }
 
+    //NativeMouseListeners
     @Override
     public void nativeMouseClicked(NativeMouseEvent nativeMouseEvent) {
-        //System.out.println("Clicked "+nativeMouseEvent.getButton());
     }
 
     @Override
     public void nativeMousePressed(NativeMouseEvent nativeMouseEvent) {
-        //System.out.println("Pressed "+nativeMouseEvent.getButton());
+        if(nativeMouseEvent.getButton()==keysMap.get(comboboxRC.getSelectedIndex())){
+            System.out.println("Pressed R"+nativeMouseEvent.getButton());
+        }
+        if(nativeMouseEvent.getButton()==keysMap.get(comboboxLC.getSelectedIndex())){
+            System.out.println("Pressed L"+nativeMouseEvent.getButton());
+        }
     }
 
     @Override
     public void nativeMouseReleased(NativeMouseEvent nativeMouseEvent) {
-        //System.out.println("Released "+nativeMouseEvent.getButton());
+        if(nativeMouseEvent.getButton()==keysMap.get(comboboxRC.getSelectedIndex())){
+            System.out.println("Released R"+nativeMouseEvent.getButton());
+        }
+        if(nativeMouseEvent.getButton()==keysMap.get(comboboxLC.getSelectedIndex())){
+            System.out.println("Pressed L"+nativeMouseEvent.getButton());
+        }
     }
 }
