@@ -7,15 +7,15 @@ public class Click extends Robot {
 
     public void leftClick(int ms) throws InterruptedException {
         this.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+        Thread.sleep(ms/2);
         this.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-        //TimeUnit.MILLISECONDS.sleep(ms);
-        Thread.sleep(ms);
+        Thread.sleep(ms/2);
     }
 
     public void rightClick(int ms) throws InterruptedException {
         this.mousePress(InputEvent.BUTTON2_DOWN_MASK);
+        Thread.sleep(ms/2);
         this.mouseRelease(InputEvent.BUTTON2_DOWN_MASK);
-        //TimeUnit.MILLISECONDS.sleep(ms);
-        Thread.sleep(ms);
+        Thread.sleep(ms/2);
     }
 }
