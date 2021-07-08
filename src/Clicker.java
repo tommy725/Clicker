@@ -8,6 +8,7 @@ import org.jnativehook.mouse.NativeMouseListener;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -17,10 +18,31 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
     Map<Integer,Integer> keysMap;
     AppFrame frame;
     Click click;
+    Settings set;
     boolean heldR, heldL;
+    TurboSaver saver;
     public Clicker() {
+        //Database
+        try {
+            saver = new TurboSaver();
+            set = saver.readFromJSON();
+        }catch(IOException ex){
+            System.out.println("Error: "+ex);
+        }
+        //=======================================================
+        //Saver on exit
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            public void run() {
+                try {
+                    saver.saveToJSON(set);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }));
+        //=======================================================
         //GUI turn on
-        frame = new AppFrame();
+        frame = new AppFrame(set);
         //=======================================================
         //Robot turn on
         try{

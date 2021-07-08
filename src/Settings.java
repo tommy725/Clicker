@@ -5,8 +5,8 @@ public class Settings {
     int randomPercent=5;
     String leftHotkey="MouseButton4";
     String rightHotkey="MouseButton5";
-    int leftMs=80;
-    int rightMs=40;
+    double leftMs=80.0;
+    double rightMs=40.0;
 
     public Settings() {
     }
@@ -70,19 +70,19 @@ public class Settings {
         this.rightHotkey = rightHotkey;
     }
 
-    public int getLeftMs() {
+    public double getLeftMs() {
         return leftMs;
     }
 
-    public void setLeftMs(int leftMs) {
+    public void setLeftMs(double leftMs) {
         this.leftMs = leftMs;
     }
 
-    public int getRightMs() {
+    public double getRightMs() {
         return rightMs;
     }
 
-    public void setRightMs(int rightMs) {
+    public void setRightMs(double rightMs) {
         this.rightMs = rightMs;
     }
 }

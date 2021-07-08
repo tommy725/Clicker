@@ -1,3 +1,6 @@
+import org.jnativehook.keyboard.NativeKeyEvent;
+import org.jnativehook.mouse.NativeMouseEvent;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -16,8 +19,13 @@ public class AppFrame extends JFrame implements ActionListener {
     CheckBox rightOnOff,leftOnOff,randomizer;
     RadioButton msInput,cpsInput,holdMode,switchMode;
     ComboBox comboboxLC,comboboxRC;
-    public AppFrame() throws HeadlessException {
+    Settings settings;
+    TurboSaver save;
+    Map<Integer,String> keysMap;
+    public AppFrame(Settings settings) throws HeadlessException {
         //Frame settings
+        save = new TurboSaver();
+        this.settings = settings;
         this.setTitle("Kambed clicker v2.0");
         this.setBounds(100,100,400,260);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,13 +87,16 @@ public class AppFrame extends JFrame implements ActionListener {
         randomizer = new CheckBox(230,160,150,30,"Ms randomized");
         randomizer.setVisible(false);
         randomizer.setForeground(Color.WHITE);
+        randomizer.setSelected(settings.isMsRandomizer());
+        randomizer.addActionListener(this);
         //=======================================================
         //RadioButtons settings
         msInput = new RadioButton(230,20,120,30,"Ms");
         msInput.setVisible(false);
-        msInput.setSelected(true);
+        msInput.setSelected(!settings.isInputInCPS());
         cpsInput = new RadioButton(230,40,120,30,"Cps");
         cpsInput.setVisible(false);
+        cpsInput.setSelected(settings.isInputInCPS());
         ButtonGroup group = new ButtonGroup();
         group.add(msInput);
         group.add(cpsInput);
@@ -94,9 +105,10 @@ public class AppFrame extends JFrame implements ActionListener {
 
         holdMode = new RadioButton(230,110,120,30,"Hold");
         holdMode.setVisible(false);
+        holdMode.setSelected(settings.isHoldMode());
         switchMode = new RadioButton(230,90,120,30,"Switch");
         switchMode.setVisible(false);
-        switchMode.setSelected(true);
+        switchMode.setSelected(!settings.isHoldMode());
         ButtonGroup group2 = new ButtonGroup();
         group2.add(switchMode);
         group2.add(holdMode);
@@ -104,25 +116,42 @@ public class AppFrame extends JFrame implements ActionListener {
         holdMode.addActionListener(this);
         //=======================================================
         //Combobox settings
+        keysMap=new HashMap<>();
+        keysMap.put(1,"F1");
+        keysMap.put(2,"F2");
+        keysMap.put(3,"F3");
+        keysMap.put(4,"F4");
+        keysMap.put(5,"F5");
+        keysMap.put(6,"F6");
+        keysMap.put(7,"F7");
+        keysMap.put(8,"F8");
+        keysMap.put(9,"F9");
+        keysMap.put(10,"F10");
+        keysMap.put(11,"F11");
+        keysMap.put(12,"F12");
+        keysMap.put(13,"MouseButton3");
+        keysMap.put(14,"MouseButton4");
+        keysMap.put(15,"MouseButton5");
+
         comboboxLC = new ComboBox(25,100,110,30);
         comboboxLC.addActionListener(this);
         comboboxLC.setVisible(false);
-        comboboxLC.setSelectedItem("MouseButton4");
+        comboboxLC.setSelectedItem(settings.getLeftHotkey());
 
         comboboxRC = new ComboBox(25,170,110,30);
         comboboxRC.addActionListener(this);
         comboboxRC.setVisible(false);
-        comboboxRC.setSelectedItem("MouseButton5");
+        comboboxRC.setSelectedItem(settings.getRightHotkey());
         //=======================================================
         //TextField settings
         textMsLeft = new TextField(135,20,120,30);
-        textMsLeft.setText("80.0");
+        textMsLeft.setText(String.valueOf(settings.getLeftMs()));
         textCpsLeft = new TextField(135,50,120,30);
-        textCpsLeft.setText("12.5");
+        textCpsLeft.setText(textCpsLeft.ConvertMsCPS(textMsLeft.getText()));
         textMsRight = new TextField(135,130,120,30);
-        textMsRight.setText("40.0");
+        textMsRight.setText(String.valueOf(settings.getRightMs()));
         textCpsRight = new TextField(135,160,120,30);
-        textCpsRight.setText("25.0");
+        textCpsRight.setText(textCpsRight.ConvertMsCPS(textMsRight.getText()));
         textCpsLeft.setEnabled(false);
         textCpsRight.setEnabled(false);
         textRandomizer = new TextField(235,185,40,30);
@@ -133,6 +162,11 @@ public class AppFrame extends JFrame implements ActionListener {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 if(textMsLeft.isEnabled()) {
+                    try {
+                        settings.setLeftMs(Double.parseDouble(textMsLeft.getText()));
+                    }catch(Exception ex){
+
+                    }
                     textCpsLeft.setText(textMsLeft.ConvertMsCPS(textMsLeft.getText()));
                 }
             }
@@ -140,6 +174,11 @@ public class AppFrame extends JFrame implements ActionListener {
             @Override
             public void removeUpdate(DocumentEvent e) {
                 if(textMsLeft.isEnabled()) {
+                    try {
+                        settings.setLeftMs(Double.parseDouble(textMsLeft.getText()));
+                    }catch(Exception ex){
+
+                    }
                     textCpsLeft.setText(textMsLeft.ConvertMsCPS(textMsLeft.getText()));
                 }
             }
@@ -147,6 +186,11 @@ public class AppFrame extends JFrame implements ActionListener {
             @Override
             public void changedUpdate(DocumentEvent e) {
                 if(textMsLeft.isEnabled()) {
+                    try {
+                        settings.setLeftMs(Double.parseDouble(textMsLeft.getText()));
+                    }catch(Exception ex){
+
+                    }
                     textCpsLeft.setText(textMsLeft.ConvertMsCPS(textMsLeft.getText()));
                 }
             }
@@ -156,6 +200,11 @@ public class AppFrame extends JFrame implements ActionListener {
             public void insertUpdate(DocumentEvent e) {
                 if(textCpsLeft.isEnabled()){
                     textMsLeft.setText(textCpsLeft.ConvertMsCPS(textCpsLeft.getText()));
+                    try {
+                        settings.setLeftMs(Double.parseDouble(textMsLeft.getText()));
+                    }catch(Exception ex){
+
+                    }
                 }
             }
 
@@ -163,6 +212,11 @@ public class AppFrame extends JFrame implements ActionListener {
             public void removeUpdate(DocumentEvent e) {
                 if(textCpsLeft.isEnabled()){
                     textMsLeft.setText(textCpsLeft.ConvertMsCPS(textCpsLeft.getText()));
+                    try {
+                        settings.setLeftMs(Double.parseDouble(textMsLeft.getText()));
+                    }catch(Exception ex){
+
+                    }
                 }
             }
 
@@ -170,6 +224,11 @@ public class AppFrame extends JFrame implements ActionListener {
             public void changedUpdate(DocumentEvent e) {
                 if(textCpsLeft.isEnabled()){
                     textMsLeft.setText(textCpsLeft.ConvertMsCPS(textCpsLeft.getText()));
+                    try {
+                        settings.setLeftMs(Double.parseDouble(textMsLeft.getText()));
+                    }catch(Exception ex){
+
+                    }
                 }
             }
         });
@@ -177,6 +236,11 @@ public class AppFrame extends JFrame implements ActionListener {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 if(textMsRight.isEnabled()) {
+                    try {
+                        settings.setRightMs(Double.parseDouble(textMsRight.getText()));
+                    }catch(Exception ex){
+
+                    }
                     textCpsRight.setText(textMsRight.ConvertMsCPS(textMsRight.getText()));
                 }
             }
@@ -184,6 +248,11 @@ public class AppFrame extends JFrame implements ActionListener {
             @Override
             public void removeUpdate(DocumentEvent e) {
                 if(textMsRight.isEnabled()) {
+                    try {
+                        settings.setRightMs(Double.parseDouble(textMsRight.getText()));
+                    }catch(Exception ex){
+
+                    }
                     textCpsRight.setText(textMsRight.ConvertMsCPS(textMsRight.getText()));
                 }
             }
@@ -191,6 +260,11 @@ public class AppFrame extends JFrame implements ActionListener {
             @Override
             public void changedUpdate(DocumentEvent e) {
                 if(textMsRight.isEnabled()) {
+                    try {
+                        settings.setRightMs(Double.parseDouble(textMsRight.getText()));
+                    }catch(Exception ex){
+
+                    }
                     textCpsRight.setText(textMsRight.ConvertMsCPS(textMsRight.getText()));
                 }
             }
@@ -200,6 +274,11 @@ public class AppFrame extends JFrame implements ActionListener {
             public void insertUpdate(DocumentEvent e) {
                 if(textCpsRight.isEnabled()) {
                     textMsRight.setText(textCpsRight.ConvertMsCPS(textCpsRight.getText()));
+                    try {
+                        settings.setRightMs(Double.parseDouble(textMsRight.getText()));
+                    }catch(Exception ex){
+
+                    }
                 }
             }
 
@@ -207,6 +286,11 @@ public class AppFrame extends JFrame implements ActionListener {
             public void removeUpdate(DocumentEvent e) {
                 if(textCpsRight.isEnabled()) {
                     textMsRight.setText(textCpsRight.ConvertMsCPS(textCpsRight.getText()));
+                    try {
+                        settings.setRightMs(Double.parseDouble(textMsRight.getText()));
+                    }catch(Exception ex){
+
+                    }
                 }
             }
 
@@ -214,9 +298,17 @@ public class AppFrame extends JFrame implements ActionListener {
             public void changedUpdate(DocumentEvent e) {
                 if(textCpsRight.isEnabled()) {
                     textMsRight.setText(textCpsRight.ConvertMsCPS(textCpsRight.getText()));
+                    try {
+                        settings.setRightMs(Double.parseDouble(textMsRight.getText()));
+                    }catch(Exception ex){
+
+                    }
                 }
             }
         });
+        //=======================================================
+        //HashMap for keyCodes
+
         //=======================================================
         //Adding all things to frame
         this.add(textMsLeft);
@@ -326,16 +418,33 @@ public class AppFrame extends JFrame implements ActionListener {
             SettingMainChanger(true);
         }
         if(e.getSource()==msInput){
+            settings.setInputInCPS(false);
             MsCpsSwitcher(true);
         }
         if(e.getSource()==cpsInput){
+            settings.setInputInCPS(true);
             MsCpsSwitcher(false);
+        }
+        if(e.getSource()==holdMode){
+            settings.setHoldMode(true);
+        }
+        if(e.getSource()==switchMode){
+            settings.setHoldMode(false);
+        }
+        if(e.getSource()==randomizer){
+            if(randomizer.isSelected()){
+                settings.setMsRandomizer(true);
+            }else{
+                settings.setMsRandomizer(false);
+            }
         }
         if(e.getSource()==comboboxLC){
             if(comboboxRC!=null){
                 if(comboboxLC.getSelectedItem()==comboboxRC.getSelectedItem() && comboboxLC.getSelectedIndex()!=0){
                     JOptionPane.showMessageDialog(background,"Hotkeys cannot be the same!","Error!",JOptionPane.ERROR_MESSAGE);
                     comboboxLC.setSelectedIndex(0);
+                }else{
+                    settings.setLeftHotkey(keysMap.get(comboboxLC.getSelectedIndex()));
                 }
             }
         }
@@ -344,6 +453,8 @@ public class AppFrame extends JFrame implements ActionListener {
                 if(comboboxRC.getSelectedItem()==comboboxLC.getSelectedItem() && comboboxRC.getSelectedIndex()!=0){
                     JOptionPane.showMessageDialog(background,"Hotkeys cannot be the same!","Error!",JOptionPane.ERROR_MESSAGE);
                     comboboxRC.setSelectedIndex(0);
+                }else{
+                    settings.setRightHotkey(keysMap.get(comboboxRC.getSelectedIndex()));
                 }
             }
         }

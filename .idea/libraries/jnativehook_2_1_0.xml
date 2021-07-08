@@ -2,8 +2,6 @@
   <library name="jnativehook-2.1.0">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../jnativehook-2.1.0/jnativehook/jar/jnativehook-2.1.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../xpp3-1.1.4c.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../xstream-1.4.14.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,34 +1,20 @@
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.security.*;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Collection;
 
 public class TurboSaver {
-    XStream xstream;
+    ObjectMapper objectMapper;
     public TurboSaver() {
-        xstream = new XStream();
-        xstream.alias("settings",Settings.class);
-        xstream.addPermission(AnyTypePermission.ANY);
     }
-    public void saveToXML(Settings o) throws IOException {
-        String xml = xstream.toXML(o);
-        File file = new File("src/Save.xml");
-        if(file.exists()){
-            FileWriter fw = new FileWriter("src/Save.xml");
-            fw.write(xml);
-            fw.close();
-        }
+    public void saveToJSON(Settings o) throws IOException, JsonMappingException {
+        objectMapper = new ObjectMapper();
+        objectMapper.writeValue(new File("src/settings.json"),o);
+
     }
-    public Settings readFromXML() throws IOException {
-        File file = new File("src/Save.xml");
-        if(file.exists()){
-            return (Settings)xstream.fromXML(Files.readString(Paths.get("src/Save.xml")));
-        }
-        return null;
+    public Settings readFromJSON() throws IOException {
+        objectMapper = new ObjectMapper();
+        return objectMapper.readValue(new File("src/settings.json"), Settings.class);
     }
 }
