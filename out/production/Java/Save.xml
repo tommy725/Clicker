@@ -1,0 +1,10 @@
+<settings>
+  <inputInCPS>false</inputInCPS>
+  <holdMode>false</holdMode>
+  <msRandomizer>false</msRandomizer>
+  <randomPercent>5</randomPercent>
+  <leftHotkey>MouseButton4</leftHotkey>
+  <rightHotkey>MouseButton5</rightHotkey>
+  <leftMs>80</leftMs>
+  <rightMs>40</rightMs>
+</settings>
