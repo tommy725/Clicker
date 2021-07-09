@@ -7,11 +7,12 @@ public class Settings {
     String rightHotkey="MouseButton5";
     double leftMs=80.0;
     double rightMs=40.0;
+    boolean save=false;
 
     public Settings() {
     }
 
-    public Settings(boolean inputInCPS, boolean holdMode, boolean msRandomizer, int randomPercent, String leftHotkey, String rightHotkey, double leftMs, double rightMs) {
+    public Settings(boolean inputInCPS, boolean holdMode, boolean msRandomizer, int randomPercent, String leftHotkey, String rightHotkey, double leftMs, double rightMs,boolean save) {
         this.inputInCPS = inputInCPS;
         this.holdMode = holdMode;
         this.msRandomizer = msRandomizer;
@@ -20,6 +21,7 @@ public class Settings {
         this.rightHotkey = rightHotkey;
         this.leftMs = leftMs;
         this.rightMs = rightMs;
+        this.save = save;
     }
 
     public boolean isInputInCPS() {
@@ -84,5 +86,13 @@ public class Settings {
 
     public void setRightMs(double rightMs) {
         this.rightMs = rightMs;
+    }
+
+    public boolean isSave() {
+        return save;
+    }
+
+    public void setSave(boolean save) {
+        this.save = save;
     }
 }

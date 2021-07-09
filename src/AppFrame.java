@@ -1,6 +1,3 @@
-import org.jnativehook.keyboard.NativeKeyEvent;
-import org.jnativehook.mouse.NativeMouseEvent;
-
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -16,7 +13,7 @@ public class AppFrame extends JFrame implements ActionListener {
     Button buttonDefaultMsLeft, buttonDefaultCpsLeft, buttonExit, buttonSettings, buttonAbout, buttonDefaultMsRight, buttonDefaultCpsRight,buttonBackFromSettings;
     TextField textMsLeft, textCpsLeft, textMsRight, textCpsRight,textRandomizer;
     Label labelLeftClick,labelRightClick,labelMsLeftClick,labelCpsLeftClick,labelMsRightClick,labelCpsRightClick,labelMsCpsSwitch,labelModeSwitch,labelRandomizer,labelPercent,labelRightHotkey,labelLeftHotkey;
-    CheckBox rightOnOff,leftOnOff,randomizer;
+    CheckBox rightOnOff,leftOnOff,randomizer,saver;
     RadioButton msInput,cpsInput,holdMode,switchMode;
     ComboBox comboboxLC,comboboxRC;
     Settings settings;
@@ -74,9 +71,9 @@ public class AppFrame extends JFrame implements ActionListener {
         labelRandomizer.setVisible(false);
         labelPercent = new Label(275,185,30,30,"%");
         labelPercent.setVisible(false);
-        labelRightHotkey = new Label(20,140,150,30,"Right click hotkey");
+        labelRightHotkey = new Label(20,148,150,30,"Right click hotkey");
         labelRightHotkey.setVisible(false);
-        labelLeftHotkey = new Label(20,70,150,30,"Left click hotkey");
+        labelLeftHotkey = new Label(20,78,150,30,"Left click hotkey");
         labelLeftHotkey.setVisible(false);
         //=======================================================
         //Checkboxes settings
@@ -89,6 +86,11 @@ public class AppFrame extends JFrame implements ActionListener {
         randomizer.setForeground(Color.WHITE);
         randomizer.setSelected(settings.isMsRandomizer());
         randomizer.addActionListener(this);
+        saver = new CheckBox(15,52,250,30,"Save settings");
+        saver.setForeground(Color.WHITE);
+        saver.setSelected(settings.isSave());
+        saver.addActionListener(this);
+        saver.setVisible(false);
         //=======================================================
         //RadioButtons settings
         msInput = new RadioButton(230,20,120,30,"Ms");
@@ -133,12 +135,12 @@ public class AppFrame extends JFrame implements ActionListener {
         keysMap.put(14,"MouseButton4");
         keysMap.put(15,"MouseButton5");
 
-        comboboxLC = new ComboBox(25,100,110,30);
+        comboboxLC = new ComboBox(25,105,110,30);
         comboboxLC.addActionListener(this);
         comboboxLC.setVisible(false);
         comboboxLC.setSelectedItem(settings.getLeftHotkey());
 
-        comboboxRC = new ComboBox(25,170,110,30);
+        comboboxRC = new ComboBox(25,175,110,30);
         comboboxRC.addActionListener(this);
         comboboxRC.setVisible(false);
         comboboxRC.setSelectedItem(settings.getRightHotkey());
@@ -345,6 +347,7 @@ public class AppFrame extends JFrame implements ActionListener {
         this.add(comboboxLC);
         this.add(labelRightHotkey);
         this.add(labelLeftHotkey);
+        this.add(saver);
         this.add(background);
         //=======================================================
         //Repaint elements to be visible
@@ -390,6 +393,7 @@ public class AppFrame extends JFrame implements ActionListener {
         comboboxLC.setVisible(!mainWindowState);
         labelRightHotkey.setVisible(!mainWindowState);
         labelLeftHotkey.setVisible(!mainWindowState);
+        saver.setVisible(!mainWindowState);
     }
     //Switch ms/cps
     public void MsCpsSwitcher(boolean ms){
@@ -432,11 +436,10 @@ public class AppFrame extends JFrame implements ActionListener {
             settings.setHoldMode(false);
         }
         if(e.getSource()==randomizer){
-            if(randomizer.isSelected()){
-                settings.setMsRandomizer(true);
-            }else{
-                settings.setMsRandomizer(false);
-            }
+            settings.setMsRandomizer(randomizer.isSelected());
+        }
+        if(e.getSource()==saver){
+            settings.setSave(saver.isSelected());
         }
         if(e.getSource()==comboboxLC){
             if(comboboxRC!=null){
