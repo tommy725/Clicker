@@ -10,7 +10,7 @@ import java.util.*;
 public class AppFrame extends JFrame implements ActionListener {
     boolean mainWindow;
     Background background;
-    Button buttonDefaultMsLeft, buttonDefaultCpsLeft, buttonExit, buttonSettings, buttonAbout, buttonDefaultMsRight, buttonDefaultCpsRight,buttonBackFromSettings;
+    Button buttonDefaultLeft, buttonExit, buttonSettings, buttonAbout, buttonDefaultRight,buttonBackFromSettings;
     TextField textMsLeft, textCpsLeft, textMsRight, textCpsRight,textRandomizer;
     Label labelLeftClick,labelRightClick,labelMsLeftClick,labelCpsLeftClick,labelMsRightClick,labelCpsRightClick,labelMsCpsSwitch,labelModeSwitch,labelRandomizer,labelPercent,labelRightHotkey,labelLeftHotkey;
     CheckBox rightOnOff,leftOnOff,randomizer,saver;
@@ -36,16 +36,10 @@ public class AppFrame extends JFrame implements ActionListener {
         //Elements settings
         background = new Background();
         //Buttons settings
-        buttonDefaultMsLeft = new Button(292,20,80,30,"Default");
-        buttonDefaultMsLeft.addActionListener(e -> textMsLeft.setText("80.0"));
-        buttonDefaultCpsLeft = new Button(292,50,80,30,"Default");
-        buttonDefaultCpsLeft.setEnabled(false);
-        buttonDefaultCpsLeft.addActionListener(e -> textCpsLeft.setText("12.5"));
-        buttonDefaultMsRight = new Button(292,130,80,30,"Default");
-        buttonDefaultMsRight.addActionListener(e -> textMsRight.setText("40.0"));
-        buttonDefaultCpsRight = new Button(292,160,80,30,"Default");
-        buttonDefaultCpsRight.setEnabled(false);
-        buttonDefaultCpsRight.addActionListener(e -> textCpsRight.setText("25.0"));
+        buttonDefaultLeft = new Button(292,30,80,40,"Default");
+        buttonDefaultLeft.addActionListener(this);
+        buttonDefaultRight = new Button(292,140,80,40,"Default");
+        buttonDefaultRight.addActionListener(this);
         buttonExit = new Button(0,0,125,55,"\uD83E\uDC14 Exit");
         buttonExit.addActionListener(e -> this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING)));
         buttonSettings = new Button(0,110,125,55,"Settings");
@@ -167,7 +161,7 @@ public class AppFrame extends JFrame implements ActionListener {
                     try {
                         settings.setLeftMs(Double.parseDouble(textMsLeft.getText()));
                     }catch(Exception ex){
-
+                        settings.setLeftMs(80.0);
                     }
                     textCpsLeft.setText(textMsLeft.ConvertMsCPS(textMsLeft.getText()));
                 }
@@ -179,7 +173,7 @@ public class AppFrame extends JFrame implements ActionListener {
                     try {
                         settings.setLeftMs(Double.parseDouble(textMsLeft.getText()));
                     }catch(Exception ex){
-
+                        settings.setLeftMs(80.0);
                     }
                     textCpsLeft.setText(textMsLeft.ConvertMsCPS(textMsLeft.getText()));
                 }
@@ -191,7 +185,7 @@ public class AppFrame extends JFrame implements ActionListener {
                     try {
                         settings.setLeftMs(Double.parseDouble(textMsLeft.getText()));
                     }catch(Exception ex){
-
+                        settings.setLeftMs(80.0);
                     }
                     textCpsLeft.setText(textMsLeft.ConvertMsCPS(textMsLeft.getText()));
                 }
@@ -205,7 +199,7 @@ public class AppFrame extends JFrame implements ActionListener {
                     try {
                         settings.setLeftMs(Double.parseDouble(textMsLeft.getText()));
                     }catch(Exception ex){
-
+                        settings.setLeftMs(80.0);
                     }
                 }
             }
@@ -217,7 +211,7 @@ public class AppFrame extends JFrame implements ActionListener {
                     try {
                         settings.setLeftMs(Double.parseDouble(textMsLeft.getText()));
                     }catch(Exception ex){
-
+                        settings.setLeftMs(80.0);
                     }
                 }
             }
@@ -229,7 +223,7 @@ public class AppFrame extends JFrame implements ActionListener {
                     try {
                         settings.setLeftMs(Double.parseDouble(textMsLeft.getText()));
                     }catch(Exception ex){
-
+                        settings.setLeftMs(80.0);
                     }
                 }
             }
@@ -241,7 +235,7 @@ public class AppFrame extends JFrame implements ActionListener {
                     try {
                         settings.setRightMs(Double.parseDouble(textMsRight.getText()));
                     }catch(Exception ex){
-
+                        settings.setRightMs(40.0);
                     }
                     textCpsRight.setText(textMsRight.ConvertMsCPS(textMsRight.getText()));
                 }
@@ -253,7 +247,7 @@ public class AppFrame extends JFrame implements ActionListener {
                     try {
                         settings.setRightMs(Double.parseDouble(textMsRight.getText()));
                     }catch(Exception ex){
-
+                        settings.setRightMs(40.0);
                     }
                     textCpsRight.setText(textMsRight.ConvertMsCPS(textMsRight.getText()));
                 }
@@ -265,7 +259,7 @@ public class AppFrame extends JFrame implements ActionListener {
                     try {
                         settings.setRightMs(Double.parseDouble(textMsRight.getText()));
                     }catch(Exception ex){
-
+                        settings.setRightMs(40.0);
                     }
                     textCpsRight.setText(textMsRight.ConvertMsCPS(textMsRight.getText()));
                 }
@@ -279,7 +273,7 @@ public class AppFrame extends JFrame implements ActionListener {
                     try {
                         settings.setRightMs(Double.parseDouble(textMsRight.getText()));
                     }catch(Exception ex){
-
+                        settings.setRightMs(40.0);
                     }
                 }
             }
@@ -291,7 +285,7 @@ public class AppFrame extends JFrame implements ActionListener {
                     try {
                         settings.setRightMs(Double.parseDouble(textMsRight.getText()));
                     }catch(Exception ex){
-
+                        settings.setRightMs(40.0);
                     }
                 }
             }
@@ -303,27 +297,25 @@ public class AppFrame extends JFrame implements ActionListener {
                     try {
                         settings.setRightMs(Double.parseDouble(textMsRight.getText()));
                     }catch(Exception ex){
-
+                        settings.setRightMs(40.0);
                     }
                 }
             }
         });
         //=======================================================
-        //HashMap for keyCodes
-
+        //CPS/MS textField enable
+        MsCpsSwitcher(!settings.isInputInCPS());
         //=======================================================
         //Adding all things to frame
         this.add(textMsLeft);
         this.add(textCpsLeft);
         this.add(textMsRight);
         this.add(textCpsRight);
-        this.add(buttonDefaultMsLeft);
-        this.add(buttonDefaultCpsLeft);
+        this.add(buttonDefaultLeft);
         this.add(buttonExit);
         this.add(buttonSettings);
         this.add(buttonAbout);
-        this.add(buttonDefaultMsRight);
-        this.add(buttonDefaultCpsRight);
+        this.add(buttonDefaultRight);
         this.add(buttonBackFromSettings);
         this.add(leftOnOff);
         this.add(rightOnOff);
@@ -362,13 +354,11 @@ public class AppFrame extends JFrame implements ActionListener {
         textCpsLeft.setVisible(mainWindowState);
         textMsRight.setVisible(mainWindowState);
         textCpsRight.setVisible(mainWindowState);
-        buttonDefaultMsLeft.setVisible(mainWindowState);
-        buttonDefaultCpsLeft.setVisible(mainWindowState);
+        buttonDefaultLeft.setVisible(mainWindowState);
         buttonExit.setVisible(mainWindowState);
         buttonSettings.setVisible(mainWindowState);
         buttonAbout.setVisible(mainWindowState);
-        buttonDefaultMsRight.setVisible(mainWindowState);
-        buttonDefaultCpsRight.setVisible(mainWindowState);
+        buttonDefaultRight.setVisible(mainWindowState);
         labelLeftClick.setVisible(mainWindowState);
         labelRightClick.setVisible(mainWindowState);
         labelCpsLeftClick.setVisible(mainWindowState);
@@ -399,12 +389,8 @@ public class AppFrame extends JFrame implements ActionListener {
     public void MsCpsSwitcher(boolean ms){
         textCpsLeft.setEnabled(!ms);
         textCpsRight.setEnabled(!ms);
-        buttonDefaultCpsLeft.setEnabled(!ms);
-        buttonDefaultCpsRight.setEnabled(!ms);
         textMsLeft.setEnabled(ms);
         textMsRight.setEnabled(ms);
-        buttonDefaultMsLeft.setEnabled(ms);
-        buttonDefaultMsRight.setEnabled(ms);
     }
     //Action listeners
     @Override
@@ -414,6 +400,20 @@ public class AppFrame extends JFrame implements ActionListener {
         }
         if(e.getSource()==rightOnOff){
             rightOnOff.changeState();
+        }
+        if(e.getSource()==buttonDefaultLeft){
+            if(textMsLeft.isEnabled()){
+                textMsLeft.setText("80.0");
+            }else{
+                textCpsLeft.setText("12.5");
+            }
+        }
+        if(e.getSource()==buttonDefaultRight){
+            if(textMsRight.isEnabled()){
+                textMsRight.setText("40.0");
+            }else{
+                textCpsRight.setText("25.0");
+            }
         }
         if(e.getSource()== buttonSettings){
             SettingMainChanger(false);
