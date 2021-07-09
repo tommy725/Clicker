@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -7,15 +9,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.util.*;
 
-public class AppFrame extends JFrame implements ActionListener {
+public class AppFrame extends JFrame implements ActionListener, ChangeListener {
     boolean mainWindow;
     Background background;
     Button buttonDefaultLeft, buttonExit, buttonSettings, buttonAbout, buttonDefaultRight,buttonBackFromSettings;
-    TextField textMsLeft, textCpsLeft, textMsRight, textCpsRight,textRandomizer;
-    Label labelLeftClick,labelRightClick,labelMsLeftClick,labelCpsLeftClick,labelMsRightClick,labelCpsRightClick,labelMsCpsSwitch,labelModeSwitch,labelRandomizer,labelPercent,labelRightHotkey,labelLeftHotkey;
+    TextField textMsLeft, textCpsLeft, textMsRight, textCpsRight;
+    Label labelLeftClick,labelRightClick,labelMsLeftClick,labelCpsLeftClick,labelMsRightClick,labelCpsRightClick,labelMsCpsSwitch,labelModeSwitch,labelRandomizer,labelPercent,labelRightHotkey,labelLeftHotkey,labelValueRandomizer;
     CheckBox rightOnOff,leftOnOff,randomizer,saver;
     RadioButton msInput,cpsInput,holdMode,switchMode;
     ComboBox comboboxLC,comboboxRC;
+    Slider sliderRandom;
     Settings settings;
     TurboSaver save;
     Map<Integer,String> keysMap;
@@ -59,11 +62,11 @@ public class AppFrame extends JFrame implements ActionListener {
         labelCpsRightClick = new Label(257,165,40,20,"cps");
         labelMsCpsSwitch = new Label(210,0,150,30,"Ms/Cps input");
         labelMsCpsSwitch.setVisible(false);
-        labelModeSwitch = new Label(210,70,150,30,"Switch/Hold mode");
+        labelModeSwitch = new Label(210,60,150,30,"Switch/Hold mode");
         labelModeSwitch.setVisible(false);
-        labelRandomizer = new Label(210,140,150,30,"AntiDetection");
+        labelRandomizer = new Label(210,120,150,30,"AntiDetection");
         labelRandomizer.setVisible(false);
-        labelPercent = new Label(275,185,30,30,"%");
+        labelPercent = new Label(356,192,30,30,"%");
         labelPercent.setVisible(false);
         labelRightHotkey = new Label(20,148,150,30,"Right click hotkey");
         labelRightHotkey.setVisible(false);
@@ -75,7 +78,7 @@ public class AppFrame extends JFrame implements ActionListener {
         leftOnOff.addActionListener(this);
         rightOnOff = new CheckBox(135,190,120,20,"Disabled");
         rightOnOff.addActionListener(this);
-        randomizer = new CheckBox(230,160,150,30,"Ms randomized");
+        randomizer = new CheckBox(230,145,150,30,"Ms randomized");
         randomizer.setVisible(false);
         randomizer.setForeground(Color.WHITE);
         randomizer.setSelected(settings.isMsRandomizer());
@@ -99,10 +102,10 @@ public class AppFrame extends JFrame implements ActionListener {
         cpsInput.addActionListener(this);
         msInput.addActionListener(this);
 
-        holdMode = new RadioButton(230,110,120,30,"Hold");
+        holdMode = new RadioButton(230,100,120,30,"Hold");
         holdMode.setVisible(false);
         holdMode.setSelected(settings.isHoldMode());
-        switchMode = new RadioButton(230,90,120,30,"Switch");
+        switchMode = new RadioButton(230,80,120,30,"Switch");
         switchMode.setVisible(false);
         switchMode.setSelected(!settings.isHoldMode());
         ButtonGroup group2 = new ButtonGroup();
@@ -139,6 +142,15 @@ public class AppFrame extends JFrame implements ActionListener {
         comboboxRC.setVisible(false);
         comboboxRC.setSelectedItem(settings.getRightHotkey());
         //=======================================================
+        //Slider settings
+        sliderRandom = new Slider(235,170,120,50);
+        sliderRandom.setVisible(false);
+        sliderRandom.addChangeListener(this);
+        labelValueRandomizer = new Label(195,165,40,30,String.valueOf(sliderRandom.getValue()));
+        labelValueRandomizer.setVisible(false);
+        labelValueRandomizer.setHorizontalAlignment(SwingConstants.RIGHT);
+        sliderRandom.setValue(settings.getRandomPercent());
+        //=======================================================
         //TextField settings
         textMsLeft = new TextField(135,20,120,30);
         textMsLeft.setText(String.valueOf(settings.getLeftMs()));
@@ -150,9 +162,6 @@ public class AppFrame extends JFrame implements ActionListener {
         textCpsRight.setText(textCpsRight.ConvertMsCPS(textMsRight.getText()));
         textCpsLeft.setEnabled(false);
         textCpsRight.setEnabled(false);
-        textRandomizer = new TextField(235,185,40,30);
-        textRandomizer.setVisible(false);
-        textRandomizer.setText("5");
 
         textMsLeft.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -333,13 +342,14 @@ public class AppFrame extends JFrame implements ActionListener {
         this.add(labelModeSwitch);
         this.add(labelRandomizer);
         this.add(randomizer);
-        this.add(textRandomizer);
         this.add(labelPercent);
         this.add(comboboxRC);
         this.add(comboboxLC);
         this.add(labelRightHotkey);
         this.add(labelLeftHotkey);
         this.add(saver);
+        this.add(sliderRandom);
+        this.add(labelValueRandomizer);
         this.add(background);
         //=======================================================
         //Repaint elements to be visible
@@ -377,13 +387,14 @@ public class AppFrame extends JFrame implements ActionListener {
         labelModeSwitch.setVisible(!mainWindowState);
         labelRandomizer.setVisible(!mainWindowState);
         randomizer.setVisible(!mainWindowState);
-        textRandomizer.setVisible(!mainWindowState);
         labelPercent.setVisible(!mainWindowState);
         comboboxRC.setVisible(!mainWindowState);
         comboboxLC.setVisible(!mainWindowState);
         labelRightHotkey.setVisible(!mainWindowState);
         labelLeftHotkey.setVisible(!mainWindowState);
         saver.setVisible(!mainWindowState);
+        sliderRandom.setVisible(!mainWindowState);
+        labelValueRandomizer.setVisible(!mainWindowState);
     }
     //Switch ms/cps
     public void MsCpsSwitcher(boolean ms){
@@ -391,6 +402,14 @@ public class AppFrame extends JFrame implements ActionListener {
         textCpsRight.setEnabled(!ms);
         textMsLeft.setEnabled(ms);
         textMsRight.setEnabled(ms);
+    }
+    //Change listeners
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        if(e.getSource()==sliderRandom){
+            labelValueRandomizer.setText(String.valueOf(sliderRandom.getValue()));
+            settings.setRandomPercent(sliderRandom.getValue());
+        }
     }
     //Action listeners
     @Override
@@ -463,4 +482,5 @@ public class AppFrame extends JFrame implements ActionListener {
         }
         //=======================================================
     }
+
 }

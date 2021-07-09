@@ -27,6 +27,6 @@ public class TurboSaver {
                 return settings;
             }
         }
-        return new Settings(false,false,false,5,"MouseButton4","MouseButton5",80.0,40.0,false);
+        return new Settings(false,false,false,10,"MouseButton4","MouseButton5",80.0,40.0,false);
     }
 }

@@ -31,13 +31,11 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
         }
         //=======================================================
         //Saver on exit
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            public void run() {
-                try {
-                    saver.saveToJSON(set);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                saver.saveToJSON(set);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }));
         //=======================================================

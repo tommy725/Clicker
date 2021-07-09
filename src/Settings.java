@@ -2,7 +2,7 @@ public class Settings {
     boolean inputInCPS=false;
     boolean holdMode=false;
     boolean msRandomizer=false;
-    int randomPercent=5;
+    int randomPercent=10;
     String leftHotkey="MouseButton4";
     String rightHotkey="MouseButton5";
     double leftMs=80.0;
