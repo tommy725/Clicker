@@ -4,20 +4,20 @@ import java.awt.event.InputEvent;
 public class ClickRight extends Robot implements Runnable{
     CheckBox right;
     TextField rightms;
-    public ClickRight(CheckBox right,TextField rightms) throws AWTException {
+    MsRandomizer msValue;
+    public ClickRight(CheckBox right,TextField rightms,MsRandomizer msValue) throws AWTException {
         this.right=right;
         this.rightms=rightms;
+        this.msValue=msValue;
     }
 
     public void rightClick(int ms) {
-        //System.out.println("Right click press");
         this.mousePress(InputEvent.BUTTON3_DOWN_MASK);
         try {
             Thread.sleep((long) (ms/2.11));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //System.out.println("Right click release");
         this.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
         try {
             Thread.sleep((long) (ms/2.11));
@@ -35,7 +35,7 @@ public class ClickRight extends Robot implements Runnable{
                 e.printStackTrace();
             }
             if(right.isSelected()){
-                rightClick((int)Double.parseDouble(rightms.getText()));
+                rightClick(msValue.msReturn((int)Double.parseDouble(rightms.getText())));
             }
         }
     }

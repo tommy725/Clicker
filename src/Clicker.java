@@ -23,6 +23,7 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
     boolean heldR, heldL;
     TurboSaver saver;
     Thread clickLeftThread,clickRightThread;
+    MsRandomizer msRandom;
     public Clicker() {
         //Database
         try {
@@ -46,10 +47,11 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
         //=======================================================
         //Robot turn on
         try{
-            clickLeft = new ClickLeft(frame.leftOnOff,frame.textMsLeft);
+            msRandom = new MsRandomizer(frame.sliderRandom,frame.randomizer);
+            clickLeft = new ClickLeft(frame.leftOnOff,frame.textMsLeft,msRandom);
             clickLeftThread = new Thread(clickLeft);
             clickLeftThread.start();
-            clickRight = new ClickRight(frame.rightOnOff,frame.textMsRight);
+            clickRight = new ClickRight(frame.rightOnOff,frame.textMsRight,msRandom);
             clickRightThread = new Thread(clickRight);
             clickRightThread.start();
         }catch(AWTException ex){
@@ -88,26 +90,6 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
         keysMap.put(15,NativeMouseEvent.BUTTON5);
         //=======================================================
     }
-//    public void LeftClicker(){
-//        System.out.println("LEFT CLICKER");
-//        while(frame.leftOnOff.isSelected()){
-//            try{
-//                click.leftClick((int)Double.parseDouble(frame.textMsLeft.getText()));
-//            }catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//    public void RightClicker(){
-//        System.out.println("RIGHT CLICKER");
-//        while(frame.rightOnOff.isSelected()){
-//            try{
-//                click.rightClick((int)Double.parseDouble(frame.textMsRight.getText()));
-//            }catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
     //NativeKeyListener
     @Override
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
