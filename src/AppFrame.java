@@ -78,6 +78,7 @@ public class AppFrame extends JFrame implements ActionListener, ChangeListener {
         leftOnOff.addActionListener(this);
         rightOnOff = new CheckBox(135,190,120,20,"Disabled");
         rightOnOff.addActionListener(this);
+
         randomizer = new CheckBox(230,145,150,30,"Ms randomized");
         randomizer.setVisible(false);
         randomizer.setForeground(Color.WHITE);
@@ -128,9 +129,8 @@ public class AppFrame extends JFrame implements ActionListener, ChangeListener {
         keysMap.put(10,"F10");
         keysMap.put(11,"F11");
         keysMap.put(12,"F12");
-        keysMap.put(13,"MouseButton3");
-        keysMap.put(14,"MouseButton4");
-        keysMap.put(15,"MouseButton5");
+        keysMap.put(13,"MouseButton4");
+        keysMap.put(14,"MouseButton5");
 
         comboboxLC = new ComboBox(25,105,110,30);
         comboboxLC.addActionListener(this);
@@ -146,7 +146,7 @@ public class AppFrame extends JFrame implements ActionListener, ChangeListener {
         sliderRandom = new Slider(235,170,120,50);
         sliderRandom.setVisible(false);
         sliderRandom.addChangeListener(this);
-        labelValueRandomizer = new Label(195,165,40,30,String.valueOf(sliderRandom.getValue()));
+        labelValueRandomizer = new Label(190,165,50,30,String.valueOf(sliderRandom.getValue()));
         labelValueRandomizer.setVisible(false);
         labelValueRandomizer.setHorizontalAlignment(SwingConstants.RIGHT);
         sliderRandom.setValue(settings.getRandomPercent());
@@ -407,7 +407,7 @@ public class AppFrame extends JFrame implements ActionListener, ChangeListener {
     @Override
     public void stateChanged(ChangeEvent e) {
         if(e.getSource()==sliderRandom){
-            labelValueRandomizer.setText(String.valueOf(sliderRandom.getValue()));
+            labelValueRandomizer.setText(String.valueOf(sliderRandom.getValue())+"%");
             settings.setRandomPercent(sliderRandom.getValue());
         }
     }

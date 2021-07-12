@@ -17,10 +17,12 @@ import java.util.logging.Logger;
 public class Clicker implements NativeMouseListener,NativeKeyListener {
     Map<Integer,Integer> keysMap;
     AppFrame frame;
-    Click click;
+    ClickLeft clickLeft;
+    ClickRight clickRight;
     Settings set;
     boolean heldR, heldL;
     TurboSaver saver;
+    Thread clickLeftThread,clickRightThread;
     public Clicker() {
         //Database
         try {
@@ -44,7 +46,12 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
         //=======================================================
         //Robot turn on
         try{
-            click = new Click();
+            clickLeft = new ClickLeft(frame.leftOnOff,frame.textMsLeft);
+            clickLeftThread = new Thread(clickLeft);
+            clickLeftThread.start();
+            clickRight = new ClickRight(frame.rightOnOff,frame.textMsRight);
+            clickRightThread = new Thread(clickRight);
+            clickRightThread.start();
         }catch(AWTException ex){
             System.out.println("Error: "+ex);
         }
@@ -81,26 +88,26 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
         keysMap.put(15,NativeMouseEvent.BUTTON5);
         //=======================================================
     }
-    public void LeftClicker(){
-        System.out.println("LEFT CLICKER");
-        while(frame.leftOnOff.isSelected()){
-            try{
-                click.leftClick((int)Double.parseDouble(frame.textMsLeft.getText()));
-            }catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    public void RightClicker(){
-        System.out.println("RIGHT CLICKER");
-        while(frame.rightOnOff.isSelected()){
-            try{
-                click.rightClick((int)Double.parseDouble(frame.textMsRight.getText()));
-            }catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    public void LeftClicker(){
+//        System.out.println("LEFT CLICKER");
+//        while(frame.leftOnOff.isSelected()){
+//            try{
+//                click.leftClick((int)Double.parseDouble(frame.textMsLeft.getText()));
+//            }catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+//    public void RightClicker(){
+//        System.out.println("RIGHT CLICKER");
+//        while(frame.rightOnOff.isSelected()){
+//            try{
+//                click.rightClick((int)Double.parseDouble(frame.textMsRight.getText()));
+//            }catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
     //NativeKeyListener
     @Override
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
