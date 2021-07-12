@@ -409,6 +409,13 @@ public class AppFrame extends JFrame implements ActionListener, ChangeListener {
         if(e.getSource()==sliderRandom){
             labelValueRandomizer.setText(String.valueOf(sliderRandom.getValue())+"%");
             settings.setRandomPercent(sliderRandom.getValue());
+            if(sliderRandom.getValue()<60){
+                labelValueRandomizer.setForeground(Color.WHITE);
+            }else if(sliderRandom.getValue()<80){
+                labelValueRandomizer.setForeground(Color.YELLOW);
+            }else{
+                labelValueRandomizer.setForeground(Color.RED);
+            }
         }
     }
     //Action listeners
