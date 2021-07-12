@@ -12,7 +12,6 @@ public class ClickLeft extends Robot implements Runnable{
     }
 
     public void leftClick(int ms) {
-        System.out.println(ms);
         this.mousePress(InputEvent.BUTTON1_DOWN_MASK);
         try {
             Thread.sleep((long)(ms/2.11));
