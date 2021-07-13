@@ -97,12 +97,11 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-        if(frame.comboboxRC.getSelectedIndex()<13) {
+        if(frame.comboboxRC.getSelectedIndex()<13 || frame.comboboxLC.getSelectedIndex()<13) {
             if(!heldR) {
                 if (nativeKeyEvent.getKeyCode() == keysMap.get(frame.comboboxRC.getSelectedIndex())) {
                     heldR = true;
                     frame.rightOnOff.changeStatewithButton();
-                    System.out.println("Pressed R" + nativeKeyEvent.getKeyChar());
                 }
             }
             if(!heldL) {
@@ -127,7 +126,7 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
 
     @Override
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
-        if(frame.comboboxRC.getSelectedIndex()<13){
+        if(frame.comboboxRC.getSelectedIndex()<13 || frame.comboboxLC.getSelectedIndex()<13){
             if(nativeKeyEvent.getKeyCode()==keysMap.get(frame.comboboxRC.getSelectedIndex())){
                 heldR =false;
                 if(frame.holdMode.isSelected()) {
@@ -151,7 +150,7 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
 
     @Override
     public void nativeMousePressed(NativeMouseEvent nativeMouseEvent) {
-            if (frame.comboboxRC.getSelectedIndex()>=13) {
+            if (frame.comboboxRC.getSelectedIndex()>=13 || frame.comboboxLC.getSelectedIndex()>=13) {
                 if(!heldR) {
                     if (nativeMouseEvent.getButton() == keysMap.get(frame.comboboxRC.getSelectedIndex())) {
                         heldR = true;
@@ -169,7 +168,7 @@ public class Clicker implements NativeMouseListener,NativeKeyListener {
 
     @Override
     public void nativeMouseReleased(NativeMouseEvent nativeMouseEvent) {
-        if(frame.comboboxRC.getSelectedIndex()>=13) {
+        if(frame.comboboxRC.getSelectedIndex()>=13 || frame.comboboxLC.getSelectedIndex()>=13) {
             if (nativeMouseEvent.getButton() == keysMap.get(frame.comboboxRC.getSelectedIndex())) {
                 heldR =false;
                 if(frame.holdMode.isSelected()){
