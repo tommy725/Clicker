@@ -27,7 +27,7 @@ public class AppFrame extends JFrame implements ActionListener, ChangeListener {
         save = new TurboSaver();
         this.settings = settings;
         this.setTitle("Kambed clicker v2.0");
-        this.setBounds(100,100,400,260);
+        this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setVisible(true);

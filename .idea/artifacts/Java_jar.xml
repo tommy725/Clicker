@@ -3,12 +3,6 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Java_jar</output-path>
     <root id="archive" name="Java.jar">
       <element id="module-output" name="Java" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../jnativehook-2.1.0/jnativehook/jar/jnativehook-2.1.0.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../jackson-annotations-2.12.3.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../jackson-databind-2.12.3.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../jackson-core-2.12.3.jar" path-in-jar="/" />
-      <element id="library" level="project" name="jackson-databind-2.12.4" />
-      <element id="library" level="project" name="jnativehook-2.1.0" />
     </root>
   </artifact>
 </component>
